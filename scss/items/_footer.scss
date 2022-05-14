@@ -1,0 +1,33 @@
+.footer {
+	padding: 50px 0 200px;
+	background: white url(../../../MiniMart//assets/bg_footer.png) no-repeat
+		bottom;
+
+	&__text {
+		font-size: 1.4rem;
+		margin: 10px 0;
+		color: $sub-text-color;
+		line-height: 2.2rem;
+
+		& span {
+			color: $primary-color;
+		}
+	}
+
+	&__link {
+		display: block;
+		font-size: 1.4rem;
+		color: $text-color;
+		margin: 10px 0;
+
+		& i {
+			min-width: 20px;
+			margin-right: 5px;
+		}
+	}
+
+	&__btn {
+		font-size: 1.4rem;
+		padding: 10px 15px;
+	}
+}
