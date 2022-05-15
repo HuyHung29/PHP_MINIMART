@@ -26,10 +26,14 @@ if (!empty($_GET)) {
                 $check = "SELECT * FROM category WHERE name = '$reName'";
 
                 if (empty($check)) {
-                    execute($update);
+                    $response = execute($update);
 
-                    header('location: ./../index.php');
-                    die();
+                    if ($response) {
+                        header('location: ./../index.php');
+                        die();
+                    } else {
+                        echo "<script>alert('Có lỗi với hệ thống vui lòng thử lại sau')</script>";
+                    }
                 } else {
                     $error = 'Tên danh mục đã tồn tại';
                 }

@@ -1,3 +1,15 @@
+<?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../users/login');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

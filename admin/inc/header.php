@@ -12,7 +12,7 @@
                 <div class="header--admin__side">
                     <div class="header--admin__user">
                         <i class="fas fa-user-circle"></i>
-                        <p>huy hung</p>
+                        <p><?=$user['name']?></p>
                     </div>
                     <div class="header--admin__task">
                         <div class="header--admin__task__list">
@@ -20,7 +20,7 @@
 
                             <div class="header--admin__task__menu">
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/products" class="header--admin__task__menu__icon blue">
+                                    <a href="../product/" class="header--admin__task__menu__icon blue">
                                         <i class="fas fa-gift"></i>
                                     </a>
                                     <p class="header--admin__task__menu__title">
@@ -36,7 +36,7 @@
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/purchase" class="header--admin__task__menu__icon orange">
+                                    <a href="../order/" class="header--admin__task__menu__icon orange">
                                         <i class="fas fa-box"></i>
                                     </a>
 
@@ -45,16 +45,16 @@
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/posts" class="header--admin__task__menu__icon sky">
+                                    <a href="../feedback/" class="header--admin__task__menu__icon sky">
                                         <i class="fab fa-megaport"></i>
                                     </a>
 
                                     <p class="header--admin__task__menu__title">
-                                        Bài viết
+                                        Phản hồi
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/info" class="header--admin__task__menu__icon grey">
+                                    <a href="../user/" class="header--admin__task__menu__icon grey">
                                         <i class="fas fa-cog"></i>
                                     </a>
 
@@ -63,7 +63,7 @@
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/" class="header--admin__task__menu__icon yellow">
+                                    <a href="../index.php" class="header--admin__task__menu__icon yellow">
                                         <i class="fas fa-sign-out-alt"></i>
                                     </a>
 
@@ -76,7 +76,7 @@
                         <p class="header--admin__task__notification">
                             <i class="far fa-bell"></i>
                         </p>
-                        <p class="header--admin__task__button">Minimart</p>
+                        <a href="../../logout.php" class="header--admin__task__button">Đăng xuất</a>
                     </div>
                 </div>
             </div>

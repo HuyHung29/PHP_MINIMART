@@ -55,23 +55,26 @@
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center py-4">
-                <p class="footer__text">© Bản quyền thuộc về <span>nhóm 11</span> | Template cung cấp bởi 
+                <a href="https://template-minimart.mysapo.net/" target="_blank" class="footer__text">© Bản quyền thuộc
+                    về <span>nhóm 11</span> | Template cung cấp bởi
                     <span>Sapo</span>
-                </p>
-                <button class="btn btn-outline-primary footer__btn">Lên đầu trang 
+                </a>
+                <button class="btn btn-outline-primary footer__btn">Lên đầu trang
                     <i class="fa-solid fa-arrow-up"></i>
                 </button>
             </div>
         </div>
     </div>
-
+    </div>
+    </div>
     <script>
-        const btn = document.querySelector(".footer__btn");
+const btn = document.querySelector(".footer__btn");
 
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.scrollTo(0,0);
-        })
+btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo(0, 0);
+})
     </script>
-</body>
-</html>
+    </body>
+
+    </html>

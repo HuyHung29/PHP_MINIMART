@@ -1,5 +1,5 @@
 <?php
-require_once './add_product_process.php';
+require_once './edit_product_process.php';
 
 $sql = "SELECT * FROM category";
 
@@ -25,7 +25,7 @@ $categories = executeResult($sql);
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../../dist/css/style.css" />
-    <title>Thêm sản phẩm</title>
+    <title>Sửa sản phẩm</title>
 </head>
 
 <body>
@@ -238,6 +238,35 @@ foreach ($categories as $row) {
                                                     </div>
                                                     <div class="preview">
                                                         <ul class="preview__list">
+                                                            <?php
+$img = "SELECT * FROM galery WHERE product_id = $product_id";
+
+$list = executeResult($img);
+
+foreach ($list as $row) {
+    echo '<li>
+            <img
+                src="../../../assets/thumbnail/' . $row['thumbnail'] . '"
+                alt="anh"
+                class="preview__img"
+            />
+        </li>';
+}
+?>
+                                                            <!-- <li>
+																	<img
+																		src="blob:http://localhost:3000/f2d19c6b-7c7d-4707-a5f1-1f1a5d86cdf3"
+																		alt="anh"
+																		class="preview__img"
+																	/>
+																</li>
+																<li>
+																	<img
+																		src="blob:http://localhost:3000/3d1d0c4b-dd4c-4cea-b87a-9e12b8f3d886"
+																		alt="anh"
+																		class="preview__img"
+																	/>
+																</li> -->
                                                         </ul>
                                                     </div>
                                                 </div>

@@ -1,33 +1,134 @@
 .header {
-	background-image: linear-gradient($primary-color, $secondary-color);
+	background-image: linear-gradient($secondary-color, $primary-color);
 
 	&__top {
 		&__item {
-			font-size: 1.5rem;
+			@include flex(center, center);
+			font-size: 1.4rem;
 			color: white;
-			margin-right: 20px;
+			padding: 0 10px;
 			position: relative;
+			transition: 0.2s ease-in;
+			cursor: pointer;
+
+			& span {
+				margin-right: 5px;
+			}
 
 			&::after {
 				content: "";
 				display: block;
-				border: 1px solid rgba($color: white, $alpha: 0.6);
-
+				height: 60%;
 				position: absolute;
-				top: 0;
-				bottom: 0;
-				right: -10px;
+				top: 50%;
+				right: 0;
+				transform: translateY(-50%);
+				border: 1px solid rgba($color: white, $alpha: 0.6);
+			}
+
+			&:first-child {
+				padding-left: 0;
 			}
 
 			&:last-child {
+				padding-right: 0;
+
 				&::after {
 					display: none;
 				}
 			}
 
-			& span {
-				margin: 0 2px;
+			&--none {
+				&::after {
+					display: none;
+				}
 			}
+
+			&:hover {
+				color: rgba($color: white, $alpha: 0.8);
+			}
+
+			&--social {
+				cursor: default;
+
+				&:hover {
+					color: white;
+				}
+
+				& a:hover {
+					color: white;
+				}
+			}
+
+			&:hover &--sub {
+				visibility: visible;
+				opacity: 1;
+				transform: scale(1);
+			}
+
+			&--sub {
+				visibility: hidden;
+				opacity: 0;
+				transform: scale(0);
+				transition: 0.25s ease-in;
+				transform-origin: calc(100% - 40px) top;
+				z-index: 85;
+				position: absolute;
+				top: calc(100% + 10px);
+				right: 0;
+				background-color: white;
+				min-width: 180px;
+				border-radius: 5px;
+				box-shadow: 0 5px 10px rgba($color: #000000, $alpha: 0.3);
+
+				&__item {
+					padding: 10px 20px;
+					color: $text-color;
+					transition: 0.2s ease-in;
+
+					& a {
+						display: block;
+						transition: 0.2s ease-in;
+					}
+
+					&:hover {
+						color: $secondary-color;
+						background-color: rgba($color: #ccc, $alpha: 0.1);
+					}
+
+					&:hover a {
+						color: $secondary-color;
+					}
+				}
+
+				&::before {
+					display: block;
+					content: "";
+					position: absolute;
+					top: -20px;
+					left: 0;
+					right: 0;
+					height: 20px;
+					background-color: transparent;
+					z-index: -1;
+				}
+
+				&::after {
+					position: absolute;
+					z-index: -1;
+					top: -30px;
+					right: 20px;
+					content: "";
+					display: block;
+					border: 20px solid;
+					border-color: transparent transparent white transparent;
+				}
+			}
+		}
+
+		&__icon {
+			font-size: 1.6rem;
+			margin-right: 5px;
 		}
 	}
 

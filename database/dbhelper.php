@@ -9,10 +9,12 @@ function execute($sql)
     mysqli_set_charset($cont, "utf8");
 
     // query
-    mysqli_query($cont, $sql);
+    $result = mysqli_query($cont, $sql);
 
     // close connect
     mysqli_close($cont);
+
+    return $result;
 }
 
 // select

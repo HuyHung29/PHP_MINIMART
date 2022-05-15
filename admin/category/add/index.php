@@ -1,5 +1,6 @@
 <?php
 require_once './add_category_process.php';
+
 ?>
 
 <!DOCTYPE html>

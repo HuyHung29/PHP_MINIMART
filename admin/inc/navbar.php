@@ -50,7 +50,7 @@
         <li class="navbar--admin__item">
             <div class="navbar--admin__item--wrap">
                 <p class="navbar--admin__item__title">
-                    <i class="fab fa-megaport"></i> Quản lý phẩn hồi
+                    <i class="fab fa-megaport"></i> Quản lý phản hồi
                 </p>
                 <i class="fas fa-chevron-down navbar--admin__item__icon"></i>
             </div>
@@ -99,7 +99,7 @@
                     </a>
                 </li>
                 <li class="navbar--admin__subitem">
-                    <a href="./../user/" class="navbar--admin__sublink">
+                    <a href="./../user/password.php" class="navbar--admin__sublink">
                         Mật khẩu
                     </a>
                 </li>

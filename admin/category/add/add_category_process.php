@@ -21,10 +21,15 @@ if (!empty($_POST)) {
 
             $sql = "INSERT INTO category (name, created_At, updated_At) VALUES ('$name', '$date', '$date')";
 
-            execute($sql);
+            $response = execute($sql);
 
-            header('location: ./../index.php');
-            die();
+            if ($response) {
+                header('location: ./../index.php');
+                die();
+            } else {
+                echo "<script>alert('Có lỗi với hệ thống vui lòng thử lại sau')</script>";
+            }
+
         }
     }
 

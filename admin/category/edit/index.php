@@ -1,4 +1,12 @@
 <?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../users/login');
+}
 require_once './edit_category_process.php';
 ?>
 

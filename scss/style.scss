@@ -23,6 +23,12 @@ a {
 	}
 }
 
+.layout {
+	&__content__background {
+		background-color: $form-background;
+	}
+}
+
 .admin {
 	&__content {
 		background-color: $page-background;
@@ -82,8 +88,15 @@ a {
 @import "./items/header";
 @import "./items/navbar";
 @import "./items/form";
+@import "./items/button";
+@import "./items/menu";
+@import "./items/profile";
+@import "./items/pagination";
 @import "./items/footer";
 @import "./page/authen";
 @import "./page/category";
 @import "./page/product";
 @import "./page/order";
+@import "./page/user";
+@import "./page/product";
+@import "./page/home";

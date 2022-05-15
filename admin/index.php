@@ -1,3 +1,14 @@
+<?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../users/login');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +45,7 @@
                 <div class="header--admin__side">
                     <div class="header--admin__user">
                         <i class="fas fa-user-circle"></i>
-                        <p>huy hung</p>
+                        <p><?=$user['name']?></p>
                     </div>
                     <div class="header--admin__task">
                         <div class="header--admin__task__list">
@@ -98,7 +109,7 @@
                         <p class="header--admin__task__notification">
                             <i class="far fa-bell"></i>
                         </p>
-                        <p class="header--admin__task__button">Minimart</p>
+                        <a href="../logout.php" class="header--admin__task__button">Đăng xuất</a>
                     </div>
                 </div>
             </div>
@@ -206,7 +217,7 @@
                                     </a>
                                 </li>
                                 <li class="navbar--admin__subitem">
-                                    <a href="./user/" class="navbar--admin__sublink">
+                                    <a href="./user/password.php" class="navbar--admin__sublink">
                                         Mật khẩu
                                     </a>
                                 </li>

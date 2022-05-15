@@ -18,7 +18,7 @@ if (!empty($_POST)) {
     }
 
     if (!preg_match($passwordRegex, $password)) {
-        $error['password'] = "Mật khẩu gồm 8 ký tự bao gồm chữ hoa, số và ký tự đặc biệt";
+        $error['password'] = "Mật khẩu ít nhất 8 ký tự cả chữ, số và ký tự đặc biệt";
     }
 
     if (empty($error)) {
@@ -31,12 +31,16 @@ if (!empty($_POST)) {
             $_SESSION['login'] = $result;
 
             if ($check == "on") {
-                setcookie('email', $email);
-                setcookie('password', $password);
+                setcookie('email', $email, time() + 86400 * 30, "/");
+                setcookie('password', $password, time() + 86400 * 30, "/");
             }
+
+            header('location: ../../../../../MiniMart');
+            die();
+        } else {
+            $error['email'] = "Email hoặc mật khẩu không đúng";
+            $error['password'] = "Email hoặc mật khẩu không đúng";
         }
 
-        // header('location: ../../../../../MiniMart');
-        // die();
     }
 }

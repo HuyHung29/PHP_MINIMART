@@ -1,8 +1,55 @@
 <?php
-require_once '../../database/dbhelper.php';
-$sql = 'SELECT product.id, cate_id, title, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id';
+session_start();
+$user = array();
 
-$result = executeResult($sql);
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../../users/login');
+}
+
+require_once '../../database/dbhelper.php';
+require_once '../../ultils/ultility.php';
+
+$order_by = $sort = "";
+
+// Handle pagination
+$limit = 10;
+$page = 0;
+
+if (!empty($_GET)) {
+    $order_by = getGet('order');
+    if (empty($order_by)) {
+        $order_by = 'price';
+    }
+    $sort = getGet('sort');
+    if (empty($sort)) {
+        $sort = "ASC";
+    }
+    $page = getGet('page');
+    if (empty($page)) {
+        $page = 1;
+    }
+} else {
+    $page = 1;
+    $order_by = "price";
+    $sort = "DESC";
+}
+
+$page_first_result = ($page - 1) * $limit;
+
+$quantity = count(executeResult("SELECT * FROM product"));
+
+$number_page = ceil($quantity / $limit);
+
+// Get product
+$products = array();
+$sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
+$products = executeResult($sql);
+
+//Get thumbnail
+$img = "SELECT * FROM galery";
+$list = executeResult($img);
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +87,7 @@ require_once './../inc/header.php';
 
                     <div class="list-product__action">
                         <div class="list-product__action__header">
-                            <h3>{total} sản phẩm</h3>
+                            <h3><?=count($products)?> sản phẩm</h3>
                         </div>
 
                         <div class="filter">
@@ -55,26 +102,30 @@ require_once './../inc/header.php';
 
                                 <ul class="filter-task__list shadow-lg">
                                     <li class="filter-task__item">
-                                        <a href="" class="filter-task__link">
+                                        <a href="?order=price&sort=DESC"
+                                            class="filter-task__link <?=($order_by == 'price' && $sort == 'DESC') ? 'filter-task__link--active' : ''?>">
                                             Giá từ cao đến thấp
                                             <i class="fas fa-sort-amount-down"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="" class="filter-task__link">
+                                        <a href="?order=price&sort=ASC"
+                                            class="filter-task__link <?=($order_by == 'price' && $sort == 'ASC') ? 'filter-task__link--active' : ''?>">
                                             Giá từ thấp đến cao
                                             <i class="fas fa-sort-amount-up"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="" class="filter-task__link">
+                                        <a href="?order=title&sort=ASC"
+                                            class="filter-task__link <?=($order_by == 'name' && $sort == 'ASC') ? 'filter-task__link--active' : ''?>">
                                             Tên từ A - Z
                                             <i class="fas fa-sort-alpha-down"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="" class="filter-task__link">
-                                            Tên từ Z - S
+                                        <a href="?order=title&sort=DESC"
+                                            class="filter-task__link <?=($order_by == 'name' && $sort == 'DESC') ? 'filter-task__link--active' : ''?>">
+                                            Tên từ Z - A
                                             <i class="fas fa-sort-alpha-up"></i>
                                         </a>
                                     </li>
@@ -106,18 +157,18 @@ require_once './../inc/header.php';
                         </div>
                         <div class="list__body">
                             <?php
-if (!empty($result)) {
-    foreach ($result as $row) {
+if (!empty($products)) {
+    foreach ($products as $row) {
         if ((int) $row['deleted'] == 0) {
             echo '<div class="list__item">
                 <div class="list__name list__name--body">
                     <p>' . $row['title'] . '</p>
                 </div>
                 <div class="list__pictures list__pictures--body">';
-            $img = "SELECT * FROM galery WHERE product_id = " . $row['id'];
-            $list = executeResult($img);
-            foreach ($list as $row1) {
-                echo "<img src='" . $row1['thumnail'] . "' alt='anh' class='img' />";
+            foreach ($list as $item) {
+                if ($item['product_id'] == $row['id']) {
+                    echo "<img src='../../assets/thumbnail/" . $item['thumbnail'] . "' alt='anh' class='img' />";
+                }
             }
             echo '</div>
                 <div class="list__cate list__cate--body">
@@ -127,17 +178,20 @@ if (!empty($result)) {
                     <p>' . $row['price'] . ' <sup>đ</sup></p>
                 </div>
                 <div class="list__origin list__origin--body">
-                    <p>country</p>
+                    <p>' . $row['country'] . '</p>
                 </div>
                 <div class="list__action list__action--body">
-                    <a href="">
+                    <a href="./edit/?id=' . $row['id'] . '">
                         <button class="btn btn-secondary list__action__btn shadow-none">
                             Sửa
                         </button>
                     </a>
-                    <button class="btn btn-secondary list__action__btn shadow-none">
-                        Xóa
-                    </button>
+                    <a href="./delete_product_process.php/?id=' . $row['id'] . '">
+                        <button class="btn btn-secondary list__action__btn shadow-none" onclick="showAlert()">
+                            Xóa
+                        </button>
+                    </a>
+
                 </div>
                 </div>';
         }
@@ -149,37 +203,41 @@ if (!empty($result)) {
         </div>";
 }
 ?>
-                            <!-- <div class="list__item">
-                                <div class="list__name list__name--body">
-                                    <p>{product.title}</p>
-                                </div>
-                                <div class="list__pictures list__pictures--body">
-                                    {product.pictures.map((img, i) => (
-                                        <img src={img} key={i} alt='anh' class='img' />
-                                    ))}
-                                </div>
-                                <div class="list__cate list__cate--body">
-                                    <p>category</p>
-                                </div>
-                                <div class="list__price list__price--body">
-                                    <p>price <sup>đ</sup></p>
-                                </div>
-                                <div class="list__origin list__origin--body">
-                                    <p>country</p>
-                                </div>
-                                <div class="list__action list__action--body">
-                                    <a href="">
-                                        <button class="btn btn-secondary list__action__btn shadow-none">
-                                            Sửa
-                                        </button>
-                                    </a>
-                                    <button class="btn btn-secondary list__action__btn shadow-none">
-                                        Xóa
-                                    </button>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
+                    <nav class="pagination--wrap" aria-label="pagination">
+                        <ul class="pagination pagination-lg">
+                            <li class="page-item <?=$page == 1 ? 'disabled' : ''?>">
+                                <a class="page-link" aria-label="Previous"
+                                    href="?order=<?=$order_by?>&sort=<?=$sort?>&page=<?=$page - 1?>">
+                                    <span aria-hidden="true" class="pagination-previous"><i
+                                            class="fas fa-chevron-left"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <?php
+for ($i = 1; $i <= $number_page; $i++) {
+    if ($i == $page) {
+        echo '<li class="page-item active">
+                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '">' . $i . '</a>
+            </li>';
+    } else {
+        echo '<li class="page-item">
+                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '">' . $i . '</a>
+            </li>';
+    }
+}
+?>
+                            <li class="page-item <?=$page == $number_page ? 'disabled' : ''?>">
+                                <a class="page-link" aria-label="Next"
+                                    href="?order=<?=$order_by?>&sort=<?=$sort?>&page=<?=$page - 1?>">
+                                    <span aria-hidden="true">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -188,6 +246,12 @@ if (!empty($result)) {
 </div>
 </div>
 </div>
+
+<script>
+const showAlert = () => {
+    alert("Bạn có chắc chắn muốn xóa sản phẩm này?");
+}
+</script>
 </body>
 
 </html>
