@@ -76,7 +76,7 @@ foreach ($cart as $row) {
                 </a>
             </div>
             <div class="cart-page__item__price">
-                <p>' . $row['price'] . '<sup>đ</sup></p>
+                <p>' . number_format($row['price']) . '<sup>đ</sup></p>
             </div>
             <div class="cart-page__item__quantity">
                 <form method="POST" class="cart-page__item__quantity__calculate">
@@ -86,7 +86,7 @@ foreach ($cart as $row) {
                 </form>
             </div>
             <div class="cart-page__item__total">
-                <p>' . $row['total'] . '<sup>đ</sup></p>
+                <p>' . number_format($row['total']) . '<sup>đ</sup></p>
             </div>
             <div class="cart-page__item__action">
                 <a href="./ultils/delete_cart_process.php?id=' . $row['pro_id'] . '"><i class="fas fa-times"></i></a>

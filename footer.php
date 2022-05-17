@@ -67,6 +67,9 @@
             </div>
         </div>
     </div>
+    <?php
+include './btn_top.php';
+?>
     </div>
     </div>
     <script>

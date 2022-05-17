@@ -304,6 +304,7 @@ foreach ($products as $row) {
     </div>
 </div>
 
+
 <?php
 include "./footer.php"
 ?>
