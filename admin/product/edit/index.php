@@ -253,20 +253,6 @@ foreach ($list as $row) {
         </li>';
 }
 ?>
-                                                            <!-- <li>
-																	<img
-																		src="blob:http://localhost:3000/f2d19c6b-7c7d-4707-a5f1-1f1a5d86cdf3"
-																		alt="anh"
-																		class="preview__img"
-																	/>
-																</li>
-																<li>
-																	<img
-																		src="blob:http://localhost:3000/3d1d0c4b-dd4c-4cea-b87a-9e12b8f3d886"
-																		alt="anh"
-																		class="preview__img"
-																	/>
-																</li> -->
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -287,7 +273,7 @@ foreach ($list as $row) {
                                             <div class="text-center col-md-12">
                                                 <button type="submit"
                                                     class="form__btn form__btn--success btn btn-secondary">
-                                                    Tạo mới</button><button type="reset"
+                                                    Lưu lại</button><button type="reset"
                                                     class="form__btn form__btn--danger btn btn-secondary">
                                                     Hủy
                                                 </button>

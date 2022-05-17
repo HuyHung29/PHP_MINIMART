@@ -12,14 +12,17 @@
 		@include flex(center);
 
 		&__item {
-			font-size: 1.5rem;
-			font-weight: 400;
 			padding: 10px;
-			transition: 0.2s ease-in;
-			cursor: pointer;
-			user-select: none;
+			& a {
+				font-size: 1.5rem;
+				font-weight: 400;
+				padding: 10px;
+				transition: 0.2s ease-in;
+				cursor: pointer;
+				user-select: none;
+			}
 
-			&.active {
+			&.active a {
 				color: $secondary-color;
 			}
 		}
@@ -138,6 +141,10 @@
 				padding: 15px 0;
 				border-bottom: 1px solid $border-color;
 
+				&:nth-child(odd) {
+					background-color: rgba($color: $border-color, $alpha: 0.6);
+				}
+
 				&:last-child {
 					border-bottom: unset;
 				}
@@ -150,8 +157,8 @@
 				}
 
 				&__products {
-					flex: 0 0 40%;
-					max-width: 40%;
+					flex: 0 0 30%;
+					max-width: 30%;
 					padding-left: 10px;
 				}
 
@@ -166,12 +173,17 @@
 
 					& p {
 						padding: 0 20px;
+						line-height: 2rem;
 					}
 				}
 
 				&__info {
-					flex: 0 0 20%;
-					max-width: 20%;
+					flex: 0 0 30%;
+					max-width: 30%;
+
+					& p {
+						margin-bottom: 10px;
+					}
 				}
 
 				&__status {
@@ -187,16 +199,20 @@
 						margin: 0 10px;
 						cursor: pointer;
 
-						&.waiting {
+						&._0 {
 							background-color: var(--bs-yellow);
 						}
 
-						&.goods {
+						&._1 {
 							background-color: var(--bs-orange);
 						}
 
-						&.done {
+						&._2 {
 							background-color: var(--bs-info);
+						}
+
+						&._3 {
+							background-color: var(--bs-danger);
 						}
 					}
 
@@ -258,6 +274,7 @@
 							flex: 0 0 50%;
 							max-width: 50%;
 							padding: 0 20px;
+							display: block;
 						}
 					}
 				}
@@ -278,11 +295,22 @@
 		margin-bottom: 5px;
 
 		&__pic {
-			max-width: 100px;
+			max-width: 60px;
+			margin: 10px 10px 10px auto;
+			border: 1px solid $border-color;
+			border-radius: 5px;
 		}
 
 		&__quantity {
-			margin-left: 15px;
+			margin-left: 10px;
+			flex: 1;
+			margin-right: 20px;
+		}
+
+		&__title {
+			word-wrap: break-word;
+			word-break: break-word;
+			max-width: 100px;
 		}
 	}
 }

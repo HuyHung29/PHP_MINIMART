@@ -13,6 +13,7 @@ if (!empty($_GET)) {
     $isDeleted = execute($sql);
 
     if ($isDeleted) {
-        header('location: ../index.php');
+        echo "<script>alert('Xóa sản phẩm thành công')</script>";
+        echo "<script>window.location='../index.php'</script>";
     }
 }

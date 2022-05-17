@@ -6,11 +6,12 @@
                     <div class="row py-4">
                         <div class="col">
                             <div class="header__top d-flex justify-content-start align-items-center">
-                                <p class="header__top__item">Trang quản trị</p>
                                 <p class="header__top__item">
                                     Kết nối
-                                    <span><i class="fa-brands fa-facebook"></i></span>
-                                    <span><i class="fa-brands fa-instagram"></i></span>
+                                    <a href="https://www.facebook.com/profile.php?id=100011702486663" target="_blank"><i
+                                            class="fa-brands fa-facebook mx-2"></i></a>
+                                    <a href="https://www.instagram.com/huyhung29901/" target="_blank"><i
+                                            class="fa-brands fa-instagram"></i></a>
                                 </p>
                             </div>
                         </div>
@@ -58,8 +59,9 @@ if (!empty($user)) {
                             </a>
                         </div>
                         <div class="col d-flex align-items-center">
-                            <form method="post" class="header__search">
-                                <input type="text" name="search" class="header__search__input" autocomplete="off" />
+                            <form method="get" class="header__search" action="./search.php">
+                                <input type="text" name="search" class="header__search__input" autocomplete="off"
+                                    placeholder="Tìm kiếm sản phẩm" />
                                 <button class="btn header__search__btn">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
@@ -67,7 +69,7 @@ if (!empty($user)) {
                         </div>
                         <div class="col-2 d-flex align-items-center justify-content-center">
                             <div class="header__cart">
-                                <a href="#">
+                                <a href="./cart.php">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </a>
                             </div>

@@ -24,7 +24,8 @@ if (!empty($_POST)) {
             $response = execute($sql);
 
             if ($response) {
-                header('location: ./../index.php');
+                echo "<script>alert('Thêm danh mục thành công')</script>";
+                echo "<script>window.location='./../index.php'</script>";
                 die();
             } else {
                 echo "<script>alert('Có lỗi với hệ thống vui lòng thử lại sau')</script>";

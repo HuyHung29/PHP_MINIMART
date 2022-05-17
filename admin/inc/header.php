@@ -28,7 +28,7 @@
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/categories" class="header--admin__task__menu__icon green">
+                                    <a href="../category" class="header--admin__task__menu__icon green">
                                         <i class="fas fa-list-ul"></i>
                                     </a>
                                     <p class="header--admin__task__menu__title">

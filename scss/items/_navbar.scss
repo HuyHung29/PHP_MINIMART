@@ -57,8 +57,16 @@
 		font-size: 1.4rem;
 		padding: 10px 10px;
 
+		& a {
+			transition: color 0.2s ease-in;
+			display: block;
+		}
+
 		&:hover {
 			background-color: $secondary-color;
+			color: white;
+		}
+		&:hover a {
 			color: white;
 		}
 	}
@@ -120,9 +128,6 @@
 		&.active {
 			display: block;
 		}
-	}
-
-	&__subitem {
 	}
 
 	&__sublink {
@@ -198,9 +203,6 @@
 			display: block;
 		}
 	}
-
-	// &__subitem {
-	// }
 
 	&__sublink {
 		display: block;

@@ -23,6 +23,14 @@ if (!empty($_POST)) {
 
     if (empty($title)) {
         $errors['title'] = "Vui lòng nhập trường này!";
+    } else {
+        $select = "SELECT * FROM product WHERE title = '$title'";
+
+        $isSame = executeResult($select);
+
+        if (!empty($isSame)) {
+            $errors['title'] = "Sản phẩm đã tồn tại";
+        }
     }
 
     if (empty($price)) {
@@ -39,7 +47,7 @@ if (!empty($_POST)) {
         $errors['country'] = "Vui lòng nhập trường này!";
     }
 
-    if (empty($discount)) {
+    if (empty($discount) && $discount != 0) {
         $errors['discount'] = "Vui lòng nhập trường này!";
     } elseif (!preg_match('/^[0-9]+$/', $discount) || (int) $discount < 0) {
         $errors['discount'] = "Giảm giá phải là số và lớn hơn 0";
@@ -106,10 +114,13 @@ if (!empty($_POST)) {
         }
 
         if (!empty($errors['thumbnail'])) {
+            $deleteImg = "DELETE FROM galery WHERE product_id = $product_Id";
+            execute($deleteImg);
             $delete = "DELETE FROM product WHERE id = $product_Id";
             execute($delete);
         } else {
-            header('location: ../index.php');
+            echo "<script>alert('Thêm sản phẩm thành công')</script>";
+            echo "<script>window.location='../index.php'</script>";
             die();
         }
     }

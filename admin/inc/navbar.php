@@ -15,12 +15,12 @@
                     </a>
                 </li>
                 <li class="navbar--admin__subitem">
-                    <a href="./../order/?status=processing" class="navbar--admin__sublink">
-                        Đang xử lý
+                    <a href="./../order/?status=1" class="navbar--admin__sublink">
+                        Đang giao
                     </a>
                 </li>
                 <li class="navbar--admin__subitem">
-                    <a href="./../order/?status=completed" class="navbar--admin__sublink">
+                    <a href="./../order/?status=2" class="navbar--admin__sublink">
                         Đã giao
                     </a>
                 </li>

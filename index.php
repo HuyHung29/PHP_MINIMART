@@ -11,7 +11,14 @@ if (!empty($user) && $user['role'] == "admin") {
     die();
 }
 
-$home = true;
+require_once './database/dbhelper.php';
+require_once './ultils/ultility.php';
+
+//Get thumbnail
+$img = "SELECT * FROM galery";
+$list = executeResult($img);
+
+require_once './ultils/add_cart_process.php';
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +62,244 @@ include "./navbar.php";
             </div>
         </div>
         <div class="home__slider col-md-12">
-            <div class="home__link--wrap"><a class="home__link" href="/products">Sản phẩm bán chạy</a></div>
+            <div class="home__link--wrap">
+                <a class="home__link"
+                    href="./products.php?cate=<?=urlencode($categories[0]['name'])?>"><?=$categories[0]['name']?></a>
+            </div>
+            <div class="row">
+                <?php
+$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[0]['id'] . "' LIMIT 5";
+$products = executeResult($selectProduct);
+foreach ($products as $row) {
+    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $thumbnail = "";
+    foreach ($list as $img) {
+        if ($img['product_id'] == $row['id']) {
+            $thumbnail = $img['thumbnail'];
+            break;
+        }
+    }
+    if ($row['discount'] != 0) {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($newPrice) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price--old">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    } else {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    }
+}
+?>
+            </div>
+        </div>
+        <div class="home__slider col-md-12">
+            <div class="home__link--wrap">
+                <a class="home__link"
+                    href="./products.php?cate=<?=urlencode($categories[5]['name'])?>"><?=$categories[5]['name']?></a>
+            </div>
+            <div class="row">
+                <?php
+$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[5]['id'] . "' LIMIT 5";
+$products = executeResult($selectProduct);
+foreach ($products as $row) {
+    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $thumbnail = "";
+    foreach ($list as $img) {
+        if ($img['product_id'] == $row['id']) {
+            $thumbnail = $img['thumbnail'];
+            break;
+        }
+    }
+    if ($row['discount'] != 0) {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($newPrice) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price--old">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    } else {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    }
+}
+?>
+            </div>
+        </div>
+        <div class="home__slider col-md-12">
+            <div class="home__link--wrap">
+                <a class="home__link"
+                    href="./products.php?cate=<?=urlencode($categories[2]['name'])?>"><?=$categories[2]['name']?></a>
+            </div>
+            <div class="row">
+                <?php
+$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[2]['id'] . "' LIMIT 5";
+$products = executeResult($selectProduct);
+foreach ($products as $row) {
+    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $thumbnail = "";
+    foreach ($list as $img) {
+        if ($img['product_id'] == $row['id']) {
+            $thumbnail = $img['thumbnail'];
+            break;
+        }
+    }
+    if ($row['discount'] != 0) {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($newPrice) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price--old">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    } else {
+        echo '<form class="product-card--wrap col" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    }
+}
+?>
+            </div>
         </div>
     </div>
 </div>

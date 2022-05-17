@@ -41,7 +41,7 @@ if (!empty($_POST)) {
 
         if ($response) {
             echo "<script>alert('Cập nhật thành công')</script>";
-            header('location: ../user');
+            echo "<script>window.location='../user'</script>";
             die();
         } else {
             echo "<script>alert('Hệ thống có lỗi vui lòng thử lại sau')</script>";

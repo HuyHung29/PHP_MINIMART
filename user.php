@@ -18,13 +18,55 @@ require_once './database/dbhelper.php';
 require_once './ultils/ultility.php';
 
 $mode = "profile";
+$status = "";
 
 if (!empty($_GET)) {
     $mode = getGet('mode');
+    $status = getGet('status');
     require_once './users/change_password__process.php';
 } else {
     require_once './users/change_user_info_process.php';
 }
+
+if (empty($status) && $status != 0) {
+    $getOrder = "SELECT * FROM orders WHERE user_id = " . $user['id'];
+} else {
+    $getOrder = "SELECT * FROM orders WHERE user_id = " . $user['id'] . " AND status = $status";
+}
+
+$orders = executeResult($getOrder);
+
+$list_id = array();
+$ids = "";
+
+if (!empty($orders)) {
+    foreach ($orders as $row) {
+        $list_id[] = $row['id'];
+    }
+
+    $ids = "(" . implode(',', $list_id) . ")";
+}
+
+$getOrderDetail = "";
+
+if (!empty($ids)) {
+    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id WHERE order_id IN $ids";
+} else {
+    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id";
+}
+
+$orderDetails = executeResult($getOrderDetail);
+
+$pro_ids = array();
+if (!empty($orderDetails)) {
+    foreach ($orderDetails as $row) {
+        $pro_ids[] = $row['product_id'];
+    }
+
+    $id_pro = "(" . implode(',', $pro_ids) . ")";
+}
+
+$thumbnails = executeResult("SELECT * FROM galery WHERE product_id IN $id_pro");
 
 ?>
 
@@ -47,7 +89,20 @@ if (!empty($_GET)) {
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./dist/css/style.css" />
-    <title>Tài khoản</title>
+    <title><?php
+if ($mode == "profile") {
+    echo "Tài khoản";
+}
+
+if ($mode == "password") {
+    echo "Mật khẩu";
+}
+
+if ($mode == "order") {
+    echo "Đơn hàng";
+}
+
+?></title>
 </head>
 <?php
 include "./header.php";
@@ -80,12 +135,12 @@ include "./header.php";
                         </ul>
                     </li>
                     <li class="user__nav__item"><i class="fas fa-clipboard"></i><a class="user__nav__link"
-                            href="/user/purchase">Đơn hàng</a></li>
+                            href="?mode=order">Đơn hàng</a></li>
                 </ul>
             </div>
         </div>
         <div class="col">
-            <div class="user__content">
+            <div class="user__content" <?=$mode == "order" ? "style='padding: 20px;'" : ""?>>
                 <div class="profile">
                     <?php
 if ($mode == "profile") {
@@ -94,11 +149,11 @@ if ($mode == "profile") {
                 <p class="profile__sub-heading">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
         </div>
         <form id="profile-form" class="profile__user" method="POST">
-            <input type="password" name="id" value="' . $user['id'] . '" class="d-none">
+            <input type="text" name="id" value="' . $user['id'] . '" class="d-none">
             <div class="profile__user__field">
                 <p class="profile__user__label">Tên</p>
                 <div class="input mb-3">
-                    <input name="name" placeholder="Tên" type="password"
+                    <input name="name" placeholder="Tên" type="text"
                     class="input__control form-control ' . (empty($errors['name']) ? '' : 'is-invalid') . '"
                             aria-invalid="false" value="' . $user['name'] . '">
                         <div class="invalid-feedback mt-3 ' . (empty($errors['name']) ? '' : 'input__error') . '">
@@ -109,7 +164,7 @@ if ($mode == "profile") {
                 <div class="profile__user__field">
                         <p class="profile__user__label">Số điện thoại</p>
                         <div class="input mb-3">
-                            <input name="phone" placeholder="Số điện thoại" type="password"
+                            <input name="phone" placeholder="Số điện thoại" type="text"
                                 class="input__control form-control ' . (empty($errors['phone']) ? '' : 'is-invalid') . '"
                                 aria-invalid="false" value="' . $user['phone'] . '">
                             <div class="invalid-feedback mt-3 ' . (empty($errors['phone']) ? '' : 'input__error') . '">
@@ -120,7 +175,7 @@ if ($mode == "profile") {
                 <div class="profile__user__field">
                         <p class="profile__user__label">Email</p>
                         <div class="input mb-3">
-                            <input name="email" placeholder="Email" type="password"
+                            <input name="email" placeholder="Email" type="text"
                                 class="input__control form-control ' . (empty($errors['email']) ? '' : 'is-invalid') . '"
                                 aria-invalid="false" value="' . $user['email'] . '">
                             <div class="invalid-feedback mt-3 ' . (empty($errors['email']) ? '' : 'input__error') . '">
@@ -173,15 +228,116 @@ if ($mode == "profile") {
                 <button type="submit"
                     class="profile__user__action xl btn btn-secondary">Xác nhận</button>
             </div>
-            <p class="forget-password">Quên mật khẩu?</p>
         </form>';
+} elseif ($mode = "order") {
+    echo '<div class="user__purchase">
+            <div class="user__purchase__header">
+                <ul class="user__purchase__header__tab">
+                    <li class="user__purchase__header__item"><a href="./user.php?mode=order" class="user__purchase__header__link ' . ($status == "" ? "active" : "") . '"
+                           >Tất cả</a></li>
+                    <li class="user__purchase__header__item"><a href="./user.php?mode=order&status=0" class="user__purchase__header__link ' . ($status == 0 ? "active" : "") . '"
+                           >Chờ xác nhận</a></li>
+                    <li class="user__purchase__header__item"><a href="./user.php?mode=order&status=1" class="user__purchase__header__link ' . ($status == 1 ? "active" : "") . '"
+                           >Đang giao</a></li>
+                    <li class="user__purchase__header__item"><a href="./user.php?mode=order&status=2" class="user__purchase__header__link ' . ($status == 2 ? "active" : "") . '"
+                           >Đã giao</a></li>
+                    <li class="user__purchase__header__item"><a href="./user.php?mode=order&status=3" class="user__purchase__header__link ' . ($status == 3 ? "active" : "") . '"
+                           >Đã hủy</a></li>
+                    <div class="user__purchase__header__line"></div>
+                </ul>
+            </div>
+        </div>';
 }
 ?>
                 </div>
             </div>
+            <div class="user__purchase__list <?=$mode == "order" ? "" : "d-none"?>">
+                <?php
+foreach ($orders as $row) {
+    $status = "";
+    switch ($row['status']) {
+        case 0:
+            $status = "Chờ xác nhận";
+            break;
+        case 1:
+            $status = "Đang giao";
+            break;
+        case 2:
+            $status = "Đã giao";
+            break;
+        case 3:
+            $status = "Đã hủy";
+            break;
+    }
+    echo '<div class="user__purchase__item">
+            <p class="user__purchase__item__status _' . $row['status'] . '">
+                ' . $status . '
+            </p>';
+    foreach ($orderDetails as $item) {
+        if ($item['order_id'] == $row['id']) {
+            $thumbnail = "";
+            foreach ($thumbnails as $img) {
+                if ($img['product_id'] == $item['product_id']) {
+                    $thumbnail = $img['thumbnail'];
+                    break;
+                }
+            }
+            echo '<div class="user__purchase__product">
+                        <div class="user__purchase__product__item">
+                            <img src="./assets/thumbnail/' . $thumbnail . '" alt="anh"
+                                class="user__purchase__product__item__thumbnail">
+                            <div class="user__purchase__product__item__info">
+                                <p class="user__purchase__product__item__name">' . $item['title'] . '</p>
+                                <p class="user__purchase__product__item__quantity">x' . $item['quantity'] . '</p>
+                            </div>
+                            <p class="user__purchase__product__item__total">
+                                ' . number_format($item['total']) . '<sup>đ</sup>
+                            </p>
+                        </div>
+                    </div>';
+        }
+    }
+    echo '<div class="user__purchase__item__action">
+                <a href="./admin/order/delete_order_process.php?id=' . $row['id'] . '" class="delete--btn btn btn-secondary buy-btn mt-0 ' . ($row['status'] == 0 ? "" : "d-none") . '">Hủy đơn</a>
+                <p class="user__purchase__item__sum">Tổng số tiền: <span>' . number_format($row['total_money']) . '<sup>đ</sup></span></p>
+            </div>
+        </div>';
+}
+?>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+const links = document.querySelectorAll('.user__purchase__header__link');
+const line = document.querySelector('.user__purchase__header__line');
+let active = document.querySelector('.user__purchase__header__link.active');
+line.style.left = active.offsetLeft + "px";
+line.style.width = active.offsetWidth + "px";
+
+
+links.forEach(link => {
+    link.addEventListener("click", () => {
+        active = document.querySelector('.user__purchase__header__link.active');
+        active.classList.remove('active');
+        link.classList.add('active');
+        line.style.left = link.offsetLeft + "px";
+        line.style.width = link.offsetWidth + "px";
+    })
+})
+
+
+const btns = document.querySelectorAll('.delete--btn');
+
+btns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        if (!confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
+            e.preventDefault();
+        }
+    })
+})
+</script>
 <?php
 include "./footer.php";
 ?>

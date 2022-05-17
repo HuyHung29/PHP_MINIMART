@@ -21,15 +21,17 @@ if (!empty($_GET)) {
             $date = date('Y-m-d H:i:s');
 
             if (!empty($reName)) {
-                $update = "UPDATE category SET name = '" . $reName . "', updated_At = '" . $date . "'";
+                $update = "UPDATE category SET name = '$reName', updated_At = ' $date' WHERE id = '$id'";
 
-                $check = "SELECT * FROM category WHERE name = '$reName'";
+                $select = "SELECT * FROM category WHERE name = '$reName'";
+                $check = executeResult($select);
 
                 if (empty($check)) {
                     $response = execute($update);
 
                     if ($response) {
-                        header('location: ./../index.php');
+                        echo "<script>alert('Sửa danh mục thành công')</script>";
+                        echo "<script>window.location='./../index.php'</script>";
                         die();
                     } else {
                         echo "<script>alert('Có lỗi với hệ thống vui lòng thử lại sau')</script>";

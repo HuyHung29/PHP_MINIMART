@@ -7,6 +7,54 @@ if (isset($_SESSION['login'])) {
 } else {
     header('location: ../users/login');
 }
+
+require_once '../database/dbhelper.php';
+require_once '../ultils/ultility.php';
+
+$orders = executeResult("SELECT * FROM orders");
+
+$wait = array();
+foreach ($orders as $row) {
+    if ($row['status'] == 0) {
+        $wait[] = $row;
+    }
+}
+
+$do = array();
+foreach ($orders as $row) {
+    if ($row['status'] == 1) {
+        $do[] = $row;
+    }
+}
+
+$done = array();
+foreach ($orders as $row) {
+    if ($row['status'] == 2) {
+        $done[] = $row;
+    }
+}
+
+$deleted = array();
+foreach ($orders as $row) {
+    if ($row['status'] == 3) {
+        $deleted[] = $row;
+    }
+}
+
+$products = executeResult("SELECT * FROM product");
+
+$disableProduct = array();
+
+foreach ($products as $row) {
+    if ($row['deleted'] == 1) {
+        $disableProduct[] = $row;
+    }
+}
+
+$categories = executeResult("SELECT * FROM category");
+
+$feedbacks = executeResult("SELECT * FROM feedback");
+
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +84,7 @@ if (isset($_SESSION['login'])) {
         <div class="row">
             <div class="header--admin">
                 <div class="header--admin__side">
-                    <a href="./../../admin/">
+                    <a href="">
                         <img src="https://bizweb.dktcdn.net/100/322/163/themes/853119/assets/logo_footer.png?1646209470651"
                             alt="anh" class="header--admin__logo" />
                     </a>
@@ -53,7 +101,7 @@ if (isset($_SESSION['login'])) {
 
                             <div class="header--admin__task__menu">
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/products" class="header--admin__task__menu__icon blue">
+                                    <a href="./product" class="header--admin__task__menu__icon blue">
                                         <i class="fas fa-gift"></i>
                                     </a>
                                     <p class="header--admin__task__menu__title">
@@ -61,7 +109,7 @@ if (isset($_SESSION['login'])) {
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/categories" class="header--admin__task__menu__icon green">
+                                    <a href="./category" class="header--admin__task__menu__icon green">
                                         <i class="fas fa-list-ul"></i>
                                     </a>
                                     <p class="header--admin__task__menu__title">
@@ -69,7 +117,7 @@ if (isset($_SESSION['login'])) {
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/purchase" class="header--admin__task__menu__icon orange">
+                                    <a href="./order/" class="header--admin__task__menu__icon orange">
                                         <i class="fas fa-box"></i>
                                     </a>
 
@@ -78,16 +126,16 @@ if (isset($_SESSION['login'])) {
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/posts" class="header--admin__task__menu__icon sky">
+                                    <a href="./feedback/" class="header--admin__task__menu__icon sky">
                                         <i class="fab fa-megaport"></i>
                                     </a>
 
                                     <p class="header--admin__task__menu__title">
-                                        Bài viết
+                                        Phản hồi
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/admin/info" class="header--admin__task__menu__icon grey">
+                                    <a href="./user/" class="header--admin__task__menu__icon grey">
                                         <i class="fas fa-cog"></i>
                                     </a>
 
@@ -96,7 +144,7 @@ if (isset($_SESSION['login'])) {
                                     </p>
                                 </div>
                                 <div class="header--admin__task__menu__item">
-                                    <a href="/" class="header--admin__task__menu__icon yellow">
+                                    <a href="./index.php" class="header--admin__task__menu__icon yellow">
                                         <i class="fas fa-sign-out-alt"></i>
                                     </a>
 
@@ -133,12 +181,12 @@ if (isset($_SESSION['login'])) {
                                     </a>
                                 </li>
                                 <li class="navbar--admin__subitem">
-                                    <a href="./order/?status=processing" class="navbar--admin__sublink">
-                                        Đang xử lý
+                                    <a href="./order/?status=1" class="navbar--admin__sublink">
+                                        Đang giao
                                     </a>
                                 </li>
                                 <li class="navbar--admin__subitem">
-                                    <a href="./order/?status=completed" class="navbar--admin__sublink">
+                                    <a href="./order/?status=2" class="navbar--admin__sublink">
                                         Đã giao
                                     </a>
                                 </li>
@@ -229,7 +277,47 @@ if (isset($_SESSION['login'])) {
             <div class="col admin__has-side">
                 <div class="row">
                     <div class='col admin__component'>
-                        hello world
+                        <div class="admin__home">
+                            <h2 class="admin__home__heading">
+                                Thông số về website
+                            </h2>
+                            <p class="admin__home__sub-heading">Số liệu về trang web của bạn</p>
+
+                            <div class="admin__home__info">
+                                <a href="./order/?status=0" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($wait)?></p>
+                                    <p class="admin__home__item__text">Chờ xác nhận</p>
+                                </a>
+                                <a href="./order/?status=1" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($do)?></p>
+                                    <p class="admin__home__item__text">Đang giao hàng</p>
+                                </a>
+                                <a href="./order/?status=2" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($done)?></p>
+                                    <p class="admin__home__item__text">Đã giao</p>
+                                </a>
+                                <a href="./order/?status=3" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($deleted)?></p>
+                                    <p class="admin__home__item__text">Đơn hủy</p>
+                                </a>
+                                <a href="./product/" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($products)?></p>
+                                    <p class="admin__home__item__text">Sản phẩm</p>
+                                </a>
+                                <a href="./product/" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($disableProduct)?></p>
+                                    <p class="admin__home__item__text">Sản phẩm tạm khóa</p>
+                                </a>
+                                <a href="./category/" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($categories)?></p>
+                                    <p class="admin__home__item__text">Danh mục</p>
+                                </a>
+                                <a href="./feedback/" class="admin__home__item">
+                                    <p class="admin__home__item__number"><?=count($feedbacks)?></p>
+                                    <p class="admin__home__item__text">Phản hồi</p>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,9 @@
+<?php
+$sql = "Select * FROM category";
+
+$categories = executeResult($sql);
+?>
+
 <div class="navbar--wrap">
     <div class="container">
         <div class="align-items-center row">
@@ -7,32 +13,18 @@
                             class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse">
                             <ul class="w-100 navbar-nav">
-                                <li class="dropdown nav-item"><a aria-haspopup="true" href="#" class="nav-link"
-                                        aria-expanded="false"><i class="fas fa-bars nav__icon"></i>Danh mục</a>
+                                <li class="dropdown nav-item"><a aria-haspopup="true" href="./products.php"
+                                        class="nav-link" aria-expanded="false"><i class="fas fa-bars nav__icon"></i>Danh
+                                        mục</a>
                                     <div tabindex="-1" role="menu" aria-hidden="true"
                                         class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Rau củ
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Hải sản
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Hoa quả
-                                            trong nước
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Hoa quả
-                                            nhập khẩu
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Hoa quả
-                                            sấy
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Thịt
-                                            các loại
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Củ các
-                                            loại
-                                        </button>
-                                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Hạt các
-                                            loại
-                                        </button>
+                                        <?php
+foreach ($categories as $row) {
+    echo '<button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+            <a href="./products.php?cate=' . urlencode($row['name']) . '">' . $row['name'] . '</a>
+            </button>';
+}
+?>
                                     </div>
                                 </li>
                             </ul>

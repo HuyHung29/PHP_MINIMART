@@ -80,7 +80,6 @@ require_once './../inc/header.php';
                     </div>
                     <button type="submit" class="profile__user__action xl btn btn-secondary ">Xác nhận</button>
                 </div>
-                <p class="forget-password">Quên mật khẩu?</p>
             </form>
         </div>
     </div>

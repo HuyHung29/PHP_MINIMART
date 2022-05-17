@@ -11,6 +11,48 @@ if (!empty($user) && $user['role'] == "admin") {
     die();
 }
 
+require_once './database/dbhelper.php';
+require_once './ultils/ultility.php';
+
+$limit = 12;
+$page = 0;
+$cateName = "";
+
+if (!empty($_GET)) {
+    $page = getGet('page');
+    if (empty($page)) {
+        $page = 1;
+    }
+    $cateName = urldecode(getGet('cate'));
+} else {
+    $page = 1;
+}
+
+$page_first_result = ($page - 1) * $limit;
+
+$quantity = count(executeResult("SELECT * FROM product"));
+
+$number_page = ceil($quantity / $limit);
+
+// Get product
+$products = array();
+if (empty($cateName)) {
+    $sql = "SELECT product.id, title, unit, price, discount, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 LIMIT " . $page_first_result . "," . $limit;
+} else {
+    $sql = "SELECT product.id, title, country, unit, price, discount, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND name = '$cateName' LIMIT " . $page_first_result . "," . $limit;
+}
+$products = executeResult($sql);
+
+//Get thumbnail
+$img = "SELECT * FROM galery";
+$list = executeResult($img);
+
+//Get category
+$cate = "SELECT * FROM category";
+$categories = executeResult($cate);
+
+require_once './ultils/add_cart_process.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -32,10 +74,11 @@ if (!empty($user) && $user['role'] == "admin") {
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./dist/css/style.css" />
-    <title>Sản phẩm</title>
+    <title><?=empty($cateName) ? "Sản phẩm" : $cateName?></title>
 </head>
 <?php
 include "./header.php";
+include "./navbar.php";
 ?>
 <div class="product-list--wrap container">
     <div class="row">
@@ -43,93 +86,122 @@ include "./header.php";
             <h3 class="product-list__title">Danh mục sản phẩm</h3>
             <div class="sub-menu">
                 <ul class="sub-menu__list">
-                    <li class="sub-menu__item"><a class="sub-menu__link" href="/">Trang chủ</a></li>
-                    <li class="sub-menu__item"><a class="sub-menu__link" href="/about-us">Giới thiệu</a></li>
-                    <li class="sub-menu__item"><a aria-current="page" class="sub-menu__link sub-menu__link--not active"
-                            href="/products">Sản phẩm <i class="fas fa-chevron-right sub-menu__icon "></i></a>
-                        <ul class="second-menu ">
-                            <li class="second-menu__item">Rau củ</li>
-                            <li class="second-menu__item">Hải sản</li>
-                            <li class="second-menu__item">Hoa quả trong nước</li>
-                            <li class="second-menu__item">Hoa quả nhập khẩu</li>
-                            <li class="second-menu__item">Hoa quả sấy</li>
-                            <li class="second-menu__item">Thịt các loại</li>
-                            <li class="second-menu__item">Củ các loại</li>
-                            <li class="second-menu__item">Hạt các loại</li>
+                    <li class="sub-menu__item"><a class="sub-menu__link" href="./index.php">Trang chủ</a></li>
+                    <li class="sub-menu__item"><a aria-current="page" class="sub-menu__link sub-menu__link--not">Sản
+                            phẩm <i class="fas fa-chevron-right sub-menu__icon"></i></a>
+                        <ul class="second-menu">
+                            <?php
+foreach ($categories as $row) {
+    echo '<li class="second-menu__item"><a href="?cate=' . urlencode($row['name']) . '">' . $row['name'] . '</a></li>';
+}
+?>
                         </ul>
                     </li>
-                    <li class="sub-menu__item"><a class="sub-menu__link" href="/news">Tin tức</a></li>
-                    <li class="sub-menu__item"><a class="sub-menu__link" href="/contact">Liên hệ</a></li>
+                    <li class="sub-menu__item"><a class="sub-menu__link" href="./feedback.php">Liên hệ</a></li>
                 </ul>
             </div>
-            <h3 class="product-list__title">Tìm theo giá</h3>
-            <ul class="sort-price">
-                <li class="sort-price__item"><input name="price" id="price-1" type="radio"
-                        class="form-check-input"><label for="price-1" class="form-label">Giá dưới
-                        100.000<sup>đ</sup></label></li>
-                <li class="sort-price__item"><input name="price" id="price-2" type="radio"
-                        class="form-check-input"><label for="price-2" class="form-label">100.000<sup>đ</sup> -
-                        200.000<sup>đ</sup></label></li>
-                <li class="sort-price__item"><input name="price" id="price-3" type="radio"
-                        class="form-check-input"><label for="price-3" class="form-label">200.000<sup>đ</sup> -
-                        300.000<sup>đ</sup></label></li>
-                <li class="sort-price__item"><input name="price" id="price-4" type="radio"
-                        class="form-check-input"><label for="price-4" class="form-label">300.000<sup>đ</sup> -
-                        500.000<sup>đ</sup></label></li>
-                <li class="sort-price__item"><input name="price" id="price-5" type="radio"
-                        class="form-check-input"><label for="price-5" class="form-label">200.000<sup>đ</sup> -
-                        1.000.000<sup>đ</sup></label></li>
-                <li class="sort-price__item"><input name="price" id="price-6" type="radio"
-                        class="form-check-input"><label for="price-6" class="form-label">Giá trên
-                        1.000.000<sup>đ</sup></label></li>
-            </ul>
         </div>
         <div class="col">
-            <h3 class="product-list__title">Tất cả sản phẩm</h3>
+            <h3 class="product-list__title"><?=empty($cateName) ? "Tất cả sản phẩm" : $cateName?></h3>
             <div class="product-list row">
-                <div class="product-card--wrap col-md-3">
-                    <div class="product-card">
-                        <a class="product-card__link" href="/products/Vải-thiều-Thanh-Hà?id=61e1b0f981a13684f482118c">
-                            <div class="product-card__img">
-                                <img src="https://res.cloudinary.com/dt5zd3iz4/image/upload/v1642180856/MiniMart/Product/vpfk5ma4i1mo8ckbz4n1.jpg"
-                                    alt="anh">
-                            </div>
-                            <div class="product-card__info">
-                                <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">Vải
-                                    thiều Thanh Hà</div>
-                                <div class="product-card__price--wrap">
-                                    <p class="product__price">39.500 <sup>đ</sup>/kg</p>
-                                    <p class="product__price--old">79.000 <sup>đ</sup>/kg</p>
-                                </div>
-                            </div>
-                        </a>
-                        <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
-                        <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
-                        <div class="add-cart-btn--wrap">
-                            <button type="button" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                                hàng</button>
-                        </div>
+                <?php
+foreach ($products as $row) {
+    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $thumbnail = "";
+    foreach ($list as $img) {
+        if ($img['product_id'] == $row['id']) {
+            $thumbnail = $img['thumbnail'];
+            break;
+        }
+    }
+    if ($row['discount'] != 0) {
+        echo '<form class="product-card--wrap col-md-3" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($newPrice) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price--old">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
                     </div>
                 </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    } else {
+        echo '<form class="product-card--wrap col-md-3" method="POST">
+        <div class="product-card">
+            <a class="product-card__link" href="./productDetail.php?id=' . $row['id'] . '">
+                <div class="product-card__img">
+                    <img src="./assets/thumbnail/' . $thumbnail . '"
+                        alt="anh">
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
+                    <div class="product-card__price--wrap">
+                        <p class="product__price">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                    </div>
+                </div>
+            </a>
+            <p class="product-card__view--btn"><i class="fas fa-eye"></i></p>
+            <p class="product-card__favorite--btn"><i class="far fa-heart"></i></p>
+            <input type="text" class="d-none" name="id" value="' . $row['id'] . '">
+            <input type="text" class="d-none" name="title" value="' . $row['title'] . '">
+            <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
+            <input type="text" class="d-none" name="price" value="' . $newPrice . '">
+            <input type="text" class="d-none" name="quantity" value="1">
+            <div class="add-cart-btn--wrap">
+                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+                    hàng</button>
+            </div>
+        </div>
+        </form>';
+    }
+
+}
+?>
             </div>
             <nav class="pagination--wrap" aria-label="pagination">
                 <ul class="pagination pagination-lg">
-                    <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                            href="/products?page=undefined"> <span aria-hidden="true" class="pagination-previous"><i
-                                    class="fas fa-chevron-left"></i></span></a></li>
-                    <li class="page-item active"><a class="page-link" href="/products?page=1">1</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="/products?page=2">2</a>
+                    <li class="page-item <?=$page == 1 ? 'disabled' : ''?>">
+                        <a class="page-link" aria-label="Previous" href="?cate=<?=$cateName?>&page=<?=$page - 1?>">
+                            <span aria-hidden="true" class="pagination-previous"><i class="fas fa-chevron-left"></i>
+                            </span>
+                        </a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/products?page=3">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/products?page=4">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" aria-label="Next" href="/products?page=2">
-                            <span aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                    <?php
+for ($i = 1; $i <= $number_page; $i++) {
+    if ($i == $page) {
+        echo '<li class="page-item active">
+                <a class="page-link" href="?cate=' . $cateName . '&page=' . $i . '">' . $i . '</a>
+            </li>';
+    } else {
+        echo '<li class="page-item">
+                <a class="page-link" href="?cate=' . $cateName . '&page=' . $i . '">' . $i . '</a>
+            </li>';
+    }
+}
+?>
+                    <li class="page-item <?=$page == $number_page ? 'disabled' : ''?>">
+                        <a class="page-link" aria-label="Next" href="?cate=<?=$cateName?>&page=<?=$page + 1?>">
+                            <span aria-hidden="true">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -137,6 +209,30 @@ include "./header.php";
         </div>
     </div>
 </div>
+
+<script>
+const menu = document.querySelector('.sub-menu__link--not');
+const subMenu = document.querySelector('.second-menu');
+const icon = document.querySelector('.sub-menu__icon');
+const heart = document.querySelector('.product-card__favorite--btn');
+const heartIcon = document.querySelector('.fa-heart');
+
+menu.addEventListener("click", () => {
+    menu.classList.toggle('active');
+    subMenu.classList.toggle('active');
+    icon.classList.toggle('active');
+})
+
+heart.addEventListener("click", () => {
+    if (heartIcon.classList.contains('far')) {
+        heartIcon.classList.remove('far');
+        heartIcon.classList.add('fas');
+    } else {
+        heartIcon.classList.remove('fas');
+        heartIcon.classList.add('far');
+    }
+})
+</script>
 
 <?php
 include "./footer.php";

@@ -87,7 +87,7 @@ require_once './../inc/header.php';
 
                     <div class="list-product__action">
                         <div class="list-product__action__header">
-                            <h3><?=count($products)?> sản phẩm</h3>
+                            <h3><?=count($products)?> / <?=$quantity?> sản phẩm</h3>
                         </div>
 
                         <div class="filter">
@@ -186,8 +186,8 @@ if (!empty($products)) {
                             Sửa
                         </button>
                     </a>
-                    <a href="./delete_product_process.php/?id=' . $row['id'] . '">
-                        <button class="btn btn-secondary list__action__btn shadow-none" onclick="showAlert()">
+                    <a href="./delete_product_process.php/?id=' . $row['id'] . '"  class="delete">
+                        <button class="btn btn-secondary list__action__btn shadow-none">
                             Xóa
                         </button>
                     </a>
@@ -230,7 +230,7 @@ for ($i = 1; $i <= $number_page; $i++) {
 ?>
                             <li class="page-item <?=$page == $number_page ? 'disabled' : ''?>">
                                 <a class="page-link" aria-label="Next"
-                                    href="?order=<?=$order_by?>&sort=<?=$sort?>&page=<?=$page - 1?>">
+                                    href="?order=<?=$order_by?>&sort=<?=$sort?>&page=<?=$page + 1?>">
                                     <span aria-hidden="true">
                                         <i class="fas fa-chevron-right"></i>
                                     </span>
@@ -248,9 +248,15 @@ for ($i = 1; $i <= $number_page; $i++) {
 </div>
 
 <script>
-const showAlert = () => {
-    alert("Bạn có chắc chắn muốn xóa sản phẩm này?");
-}
+const deletes = document.querySelectorAll(".delete");
+
+deletes.forEach(item => {
+    item.addEventListener("click", (e) => {
+        if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+            e.preventDefault();
+        }
+    })
+});
 </script>
 </body>
 

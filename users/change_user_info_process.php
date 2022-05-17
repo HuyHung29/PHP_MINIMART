@@ -40,6 +40,7 @@ if (!empty($_POST)) {
         $response = execute($sql);
 
         if ($response) {
+            echo "<script>alert('Cập nhật thành công!')</script>";
             $getUser = "SELECT * FROM user WHERE id = '$id'";
 
             $userInfo = executeResult($getUser, true);
@@ -52,7 +53,7 @@ if (!empty($_POST)) {
 
             $_SESSION['login'] = $userInfo;
 
-            header('location: ./user.php');
+            echo "<script>window.location='./user.php'</script>";
             die();
         } else {
             echo "<script>alert('Hệ thống có lỗi vui lòng thử lại sau')</script>";

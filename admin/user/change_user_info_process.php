@@ -56,7 +56,7 @@ if (!empty($_POST)) {
 
             $_SESSION['login'] = $userInfo;
 
-            header('location: ../admin');
+            echo "<script>window.location='./index.php'</script>";
             die();
         } else {
             echo "<script>alert('Hệ thống có lỗi vui lòng thử lại sau')</script>";

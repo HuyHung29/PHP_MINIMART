@@ -36,7 +36,8 @@ if (!empty($_POST)) {
         $response = execute($sql);
 
         if ($response) {
-            header("location: ./../../MiniMart/feedback.php");
+            echo "<script>alert('Gửi phản hồi thành công')</script>";
+            echo "<script>window.location='./../../MiniMart/feedback.php'</script>";
             die();
         }
     }
