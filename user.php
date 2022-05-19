@@ -114,7 +114,8 @@ include "./header.php";
                 <div class="user__nav__header">
                     <div class="user__nav__img"><i class="fas fa-user"></i></div>
                     <div class="user__nav__basic-info">
-                        <p class="user__nav__text">duc</p><span class="user__nav__sub-text"><i class="fas fa-pen"></i>
+                        <p class="user__nav__text"><?=$user['name']?></p><span class="user__nav__sub-text"><i
+                                class="fas fa-pen"></i>
                             Sửa
                             hồ sơ</span>
                     </div>
@@ -134,8 +135,9 @@ include "./header.php";
                             </li>
                         </ul>
                     </li>
-                    <li class="user__nav__item"><i class="fas fa-clipboard"></i><a class="user__nav__link"
-                            href="?mode=order">Đơn hàng</a></li>
+                    <li class="user__nav__item"><i class="fas fa-clipboard"></i><a
+                            class="user__nav__link <?=$mode == "order" ? 'active' : ""?>" href="?mode=order">Đơn
+                            hàng</a></li>
                 </ul>
             </div>
         </div>

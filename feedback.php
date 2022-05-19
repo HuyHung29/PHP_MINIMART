@@ -107,7 +107,7 @@ include "./header.php";
                             </div>
                             <div class="text-center col-md-12">
                                 <button type="submit" class="form__btn form__btn--success btn btn-secondary">
-                                    Tạo mới</button>
+                                    Gửi</button>
                             </div>
                         </div>
                     </div>

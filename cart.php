@@ -51,7 +51,15 @@ include "./navbar.php";
 ?>
 <div class="cart-page  container">
     <div class="row">
-        <div class="col-md-12">
+        <?php
+if (!(count($cart) > 0)) {
+    echo ' <div class="cart-page--empty"><img src="./assets/emptyCart.png" alt="empty">
+                <p>Giỏ hàng của bạn trống</p><a class="btn-normal" href="./products.php">Mua ngay</a>
+            </div>';
+}
+?>
+
+        <div class="col-md-12 <?=count($cart) > 0 ? "" : "d-none"?>">
             <div class="cart-page__item cart-page--margin bg-white ">
                 <div class="cart-page__item__product">Sản phẩm</div>
                 <div class="cart-page__item__price">Đơn giá</div>
@@ -76,7 +84,7 @@ foreach ($cart as $row) {
                 </a>
             </div>
             <div class="cart-page__item__price">
-                <p>' . number_format($row['price']) . '<sup>đ</sup></p>
+                <p>' . number_format((int) $row['price']) . '<sup>đ</sup></p>
             </div>
             <div class="cart-page__item__quantity">
                 <form method="POST" class="cart-page__item__quantity__calculate">
@@ -86,10 +94,10 @@ foreach ($cart as $row) {
                 </form>
             </div>
             <div class="cart-page__item__total">
-                <p>' . number_format($row['total']) . '<sup>đ</sup></p>
+                <p>' . number_format((int) $row['total']) . '<sup>đ</sup></p>
             </div>
             <div class="cart-page__item__action">
-                <a href="./ultils/delete_cart_process.php?id=' . $row['pro_id'] . '"><i class="fas fa-times"></i></a>
+                <a class="cart-page__item__action__link" href="./ultils/delete_cart_process.php?id=' . $row['pro_id'] . '"><i class="fas fa-times"></i></a>
             </div>
             </div>';
 }
@@ -99,6 +107,8 @@ foreach ($cart as $row) {
                 <div class="cart-page__item__summary">
                     <p>Tổng thanh toán (<?=count($cart)?> Sản phẩm): <span><sup>đ</sup><?=number_format($sum)?></span>
                     </p>
+                    <a href="./ultils/delete_cart_process.php?delete=all"
+                        class="btn btn-secondary add-cart-btn mt-0 delete-all">Xóa tất cả sản phẩm</a>
                     <a href="./order.php">
                         <button class="buy-btn shadow-none  buy-btn--mr0 btn btn-secondary">Mua hàng</button>
                     </a>
@@ -114,6 +124,23 @@ const input = document.querySelector('input[name="quantity"]');
 input.addEventListener("change", () => {
     if (input.value <= 0) {
         input.value = 1;
+    }
+})
+
+const cartBtns = document.querySelectorAll('.cart-page__item__action__link');
+
+cartBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+            e.preventDefault();
+        }
+    })
+})
+
+const deleteAll = document.querySelector(".delete-all");
+deleteAll.addEventListener("click", (e) => {
+    if (!confirm("Bạn có chắc chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?")) {
+        e.preventDefault();
     }
 })
 </script>

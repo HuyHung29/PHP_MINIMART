@@ -135,6 +135,8 @@
 				width: 100px;
 				height: 100px;
 				object-fit: cover;
+				border: 1px solid $border-color;
+				border-radius: 5px;
 			}
 		}
 
@@ -151,6 +153,7 @@
 			font-size: 1.6rem;
 			cursor: pointer;
 			transition: color 0.2s ease-in;
+			margin-bottom: 10px;
 
 			&:hover {
 				color: $secondary-color;
@@ -161,6 +164,7 @@
 		&__quantity {
 			font-size: 1.4rem;
 			margin-top: 5px;
+			margin-bottom: 10px;
 		}
 
 		&__price {

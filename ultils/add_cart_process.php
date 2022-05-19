@@ -1,6 +1,12 @@
 <?php
 
 if (!empty($_POST)) {
+    $id = getPost('id');
+    $title = getPost('title');
+    $thumbnail = getPost('thumbnail');
+    $price = (int) getPost('price');
+    $quantity = (int) getPost('quantity');
+    $total = $price * $quantity;
 
     if (isset($_SESSION['cart'])) {
         $item_array_id = array_column($_SESSION['cart'], "pro_id");
@@ -9,32 +15,32 @@ if (!empty($_POST)) {
             $count = count($_SESSION['cart']);
 
             $item = array(
-                'pro_id' => getPost('id'),
-                'title' => getPost('title'),
-                'thumbnail' => getPost('thumbnail'),
-                'price' => getPost('price'),
-                'quantity' => getPost('quantity'),
-                'total' => (int) getPost('price') * (int) getPost('quantity'),
+                'pro_id' => $id,
+                'title' => $title,
+                'thumbnail' => $thumbnail,
+                'price' => $price,
+                'quantity' => $quantity,
+                'total' => $total,
             );
             $_SESSION['cart'][$count] = $item;
             echo "<script>alert('Thêm sản phẩm vào giỏ hàng thành công')</script>";
-            echo "<script>window.location='./products.php'</script>";
+            echo "<script>window.location=''</script>";
         } else {
             echo "<script>alert('Sản phẩm đã có trong giỏ hàng')</script>";
-            echo "<script>window.location='./products.php'</script>";
+            echo "<script>window.location=''</script>";
         }
     } else {
         $item = array(
-            'pro_id' => getPost('id'),
-            'title' => getPost('title'),
-            'thumbnail' => getPost('thumbnail'),
-            'price' => getPost('price'),
-            'quantity' => getPost('quantity'),
-            'total' => getPost('total'),
+            'pro_id' => $id,
+            'title' => $title,
+            'thumbnail' => $thumbnail,
+            'price' => $price,
+            'quantity' => $quantity,
+            'total' => $total,
         );
 
         $_SESSION['cart'][0] = $item;
         echo "<script>alert('Thêm sản phẩm vào giỏ hàng thành công')</script>";
-        echo "<script>window.location='./products.php'</script>";
+        echo "<script>window.location=''</script>";
     }
 }

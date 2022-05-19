@@ -106,7 +106,7 @@ foreach ($categories as $row) {
             <div class="product-list row">
                 <?php
 foreach ($products as $row) {
-    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $newPrice = (int) $row['price'] - (int) $row['price'] * (int) $row['discount'] / 100;
     $thumbnail = "";
     foreach ($list as $img) {
         if ($img['product_id'] == $row['id']) {
@@ -126,7 +126,7 @@ foreach ($products as $row) {
                     <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
                     <div class="product-card__price--wrap">
                         <p class="product__price">' . number_format($newPrice) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
-                        <p class="product__price--old">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price--old">' . number_format((int) $row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
                     </div>
                 </div>
             </a>
@@ -154,7 +154,7 @@ foreach ($products as $row) {
                 <div class="product-card__info">
                     <div class="product-card__name" style="-webkit-line-clamp: 1; display: -webkit-box;">' . $row['title'] . '</div>
                     <div class="product-card__price--wrap">
-                        <p class="product__price">' . number_format($row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
+                        <p class="product__price">' . number_format((int) $row['price']) . ' <sup>đ</sup>/' . $row['unit'] . '</p>
                     </div>
                 </div>
             </a>

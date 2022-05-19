@@ -73,9 +73,9 @@ include './btn_top.php';
     </div>
     </div>
     <script>
-const btn = document.querySelector(".footer__btn");
+const btnFooter = document.querySelector(".footer__btn");
 
-btn.addEventListener("click", (e) => {
+btnFooter.addEventListener("click", (e) => {
     e.preventDefault();
     window.scrollTo(0, 0);
 })

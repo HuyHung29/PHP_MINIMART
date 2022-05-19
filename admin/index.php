@@ -216,7 +216,7 @@ $feedbacks = executeResult("SELECT * FROM feedback");
                         <li class="navbar--admin__item">
                             <div class="navbar--admin__item--wrap">
                                 <p class="navbar--admin__item__title">
-                                    <i class="fab fa-megaport"></i> Quản lý phẩn hồi
+                                    <i class="fab fa-megaport"></i> Quản lý phản hồi
                                 </p>
                                 <i class="fas fa-chevron-down navbar--admin__item__icon"></i>
                             </div>
