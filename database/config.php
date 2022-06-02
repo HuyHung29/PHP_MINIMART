@@ -1,5 +1,5 @@
 <?php
 define('HOST', 'localhost');
-define('DATABASE', 'mart');
+define('DATABASE', 'minimart');
 define('USERNAME', 'root');
 define('PASSWORD', '');

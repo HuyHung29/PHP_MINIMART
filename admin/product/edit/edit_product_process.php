@@ -4,7 +4,7 @@ require_once '../../../database/dbhelper.php';
 require_once '../../../ultils/ultility.php';
 
 $errors = array();
-$cate_id = $title = $price = $unit = $country = $discount = $description = "";
+$cate_id = $title = $price = $unit = $country = $quantity = $discount = $description = "";
 $date = date('Y-m-d H:i:s');
 
 $product_id = "";
@@ -12,7 +12,7 @@ if (!empty($_GET)) {
     $product_id = getGet('id');
 }
 
-$get = "SELECT product.id, cate_id, title, unit,discount, description, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE product.id = '$product_id'";
+$get = "SELECT product.id, cate_id, title, unit,discount, description, country, price, deleted, quantity, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE product.id = '$product_id'";
 
 $product = executeResult($get, true);
 
@@ -24,6 +24,7 @@ if (!empty($product)) {
     $country = $product['country'];
     $discount = $product['discount'];
     $description = $product['description'];
+    $quantity = $product['quantity'];
 }
 
 if (!empty($_POST)) {
@@ -34,7 +35,9 @@ if (!empty($_POST)) {
     $unit = getPost('unit');
     $country = getPost('country');
     $discount = getPost('discount');
-    $description = getPost('description');
+    $description = $_POST['description'];
+    $description = htmlspecialchars($description);
+    $quantity = getPost('quantity');
 
     if (empty($cate_id)) {
         $errors['category'] = "Vui lòng nhập trường này!";
@@ -43,7 +46,7 @@ if (!empty($_POST)) {
     if (empty($title)) {
         $errors['title'] = "Vui lòng nhập trường này!";
     } else {
-        $select = "SELECT * FROM product WHERE title = '$title'";
+        $select = "SELECT * FROM product WHERE title = '$title' AND id != $product_id";
 
         $isSame = executeResult($select);
 
@@ -56,6 +59,12 @@ if (!empty($_POST)) {
         $errors['price'] = "Vui lòng nhập trường này!";
     } elseif (!preg_match('/^[0-9]+$/', $price) || (float) $price < 0) {
         $errors['price'] = "Giá phải là số và lớn hơn 0";
+    }
+
+    if (empty($quantity)) {
+        $errors['quantity'] = "Vui lòng nhập trường này!";
+    } elseif (!preg_match('/^[0-9]+$/', $quantity) || (float) $quantity < 0) {
+        $errors['quantity'] = "Số lượng phải là số và lớn hơn 0";
     }
 
     if (empty($unit)) {
@@ -76,13 +85,13 @@ if (!empty($_POST)) {
         $errors['description'] = "Vui lòng nhập trường này!";
     }
 
-    if (empty(array_filter($_FILES['thumbnails']['name']))) {
-        $errors['thumbnail'] = "Vui lòng chọn ảnh";
-    }
+    // if (empty(array_filter($_FILES['thumbnails']['name']))) {
+    //     $errors['thumbnail'] = "Vui lòng chọn ảnh";
+    // }
 
     if (empty($errors)) {
         $sql = "INSERT INTO product (cate_id, title, price, unit, country, discount, description, created_At,
-        updated_At) VALUES ('$cate_id', '$title', '$price', '$unit', '$country', '$discount', '$description', '$date', '$date')";
+        updated_At, quantity) VALUES ('$cate_id', '$title', '$price', '$unit', '$country', '$discount', '$description', '$date', '$date', $quantity)";
 
         $sql = "UPDATE product
                 SET cate_id = '$cate_id',
@@ -92,23 +101,23 @@ if (!empty($_POST)) {
                     country = '$country',
                     discount = '$discount',
                     description = '$description',
-                    updated_At = '$date'
+                    updated_At = '$date',
+                    quantity = $quantity
                 WHERE id = $product_id";
 
         $response = execute($sql);
 
         if ($response) {
-            $delete = "DELETE FROM galery WHERE product_id = $product_id";
+            $uploadsDir = "../../../assets/thumbnail/";
+            $allowedFileType = array('jpg', 'png', 'jpeg');
 
-            $isDeleted = execute($delete);
+            // Validate if files exist
+            if (!empty(array_filter($_FILES['thumbnails']['name']))) {
+                $delete = "DELETE FROM galery WHERE product_id = $product_id";
 
-            if ($isDeleted) {
-                $uploadsDir = "../../../assets/thumbnail/";
-                $allowedFileType = array('jpg', 'png', 'jpeg');
+                $isDeleted = execute($delete);
 
-                // Validate if files exist
-                if (!empty(array_filter($_FILES['thumbnails']['name']))) {
-
+                if ($isDeleted) {
                     // Loop through file items
                     foreach ($_FILES['thumbnails']['name'] as $id => $val) {
                         // Get files upload path
@@ -139,21 +148,12 @@ if (!empty($_POST)) {
                             }
                         }
                     }
-                } else {
-                    $errors['thumbnail'] = "Vui lòng chọn ảnh";
                 }
             }
-        }
-
-        if (!empty($errors['thumbnail'])) {
-            $deleteImg = "DELETE FROM galery WHERE product_id = $product_Id";
-            execute($deleteImg);
-            $delete = "DELETE FROM product WHERE id = $product_Id";
-            execute($delete);
-        } else {
             echo "<script>alert('Sửa sản phẩm thành công')</script>";
             echo "<script>window.location='../index.php'</script>";
             die();
         }
+
     }
 }

@@ -53,7 +53,7 @@ require_once './../inc/header.php';
                         <div class="category-list__content__body">
                             <div class="category-list__content__body__header">
                                 <h3>
-                                    <?=count($categories)?> danh mục
+                                    <?=count($categories) - 1?> danh mục
                                 </h3>
                                 <a href="./add/">
                                     <button class="category-list__content__body__header__add btn btn-secondary">
@@ -87,6 +87,10 @@ require_once './../inc/header.php';
                                 <?php
 $index = 1;
 foreach ($categories as $row) {
+    if ($row['id'] == 1) {
+        continue;
+    }
+
     $created_date = date_create($row['created_At']);
     $updated_date = date_create($row['updated_At']);
     echo '<div class="category-list__content__body__list__item">
@@ -115,6 +119,11 @@ foreach ($categories as $row) {
                                             Sửa
                                         </button>
                                         </a>
+                                    <a href="./delete_category_process.php?id=' . $row['id'] . '">
+                                        <button class="btn btn-secondary list__action__btn shadow-none delete_btn">
+                                            Xóa
+                                        </button>
+                                        </a>
                                 </div>
                                 </div>';
 }
@@ -130,6 +139,18 @@ foreach ($categories as $row) {
 </div>
 </div>
 </div>
+
+<script>
+const delete_btns = document.querySelectorAll('.delete_btn');
+
+delete_btns.forEach(del_btn => {
+    del_btn.addEventListener("click", (e) => {
+        if (!confirm("Bạn có chắc chắc muốn xóa danh mục này không?")) {
+            e.preventDefault();
+        }
+    })
+})
+</script>
 </body>
 
 </html>

@@ -241,3 +241,12 @@
 		border: 1px solid $border-color;
 	}
 }
+
+.ck-editor__editable {
+	min-height: 300px;
+}
+
+.ck-editor__editable_inline p {
+	font-size: 1.4rem !important;
+	font-family: "Roboto", sans-serif !important;
+}

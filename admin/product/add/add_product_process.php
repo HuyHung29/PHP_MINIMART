@@ -4,7 +4,7 @@ require_once '../../../database/dbhelper.php';
 require_once '../../../ultils/ultility.php';
 
 $errors = array();
-$cate_id = $title = $price = $unit = $country = $discount = $description = "";
+$cate_id = $title = $price = $unit = $quantity = $country = $discount = $description = "";
 $date = date('Y-m-d H:i:s');
 
 if (!empty($_POST)) {
@@ -15,7 +15,9 @@ if (!empty($_POST)) {
     $unit = getPost('unit');
     $country = getPost('country');
     $discount = getPost('discount');
-    $description = getPost('description');
+    $quantity = getPost('quantity');
+    $description = $_POST['description'];
+    $description = htmlspecialchars($description);
 
     if (empty($cate_id)) {
         $errors['category'] = "Vui lòng nhập trường này!";
@@ -37,6 +39,12 @@ if (!empty($_POST)) {
         $errors['price'] = "Vui lòng nhập trường này!";
     } elseif (!preg_match('/^[0-9]+$/', $price) || (float) $price < 0) {
         $errors['price'] = "Giá phải là số và lớn hơn 0";
+    }
+
+    if (empty($quantity)) {
+        $errors['quantity'] = "Vui lòng nhập trường này!";
+    } elseif (!preg_match('/^[0-9]+$/', $quantity) || (float) $quantity < 0) {
+        $errors['quantity'] = "Số lượng phải là số và lớn hơn 0";
     }
 
     if (empty($unit)) {
@@ -63,7 +71,7 @@ if (!empty($_POST)) {
 
     if (empty($errors)) {
         $sql = "INSERT INTO product (cate_id, title, price, unit, country, discount, description, created_At,
-        updated_At) VALUES ('$cate_id', '$title', '$price', '$unit', '$country', '$discount', '$description', '$date', '$date')";
+        updated_At, quantity) VALUES ('$cate_id', '$title', '$price', '$unit', '$country', '$discount', '$description', '$date', '$date', $quantity)";
 
         $response = execute($sql);
 

@@ -24,6 +24,7 @@ $categories = executeResult($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="../../../dist/css/style.css" />
     <title>Thêm sản phẩm</title>
 </head>
@@ -225,7 +226,7 @@ foreach ($categories as $row) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <div class="input mb-3">
                                                     <label class="input__label form-label">Ảnh minh họa</label>
                                                     <input name="thumbnails[]" type="file" multiple
@@ -242,10 +243,22 @@ foreach ($categories as $row) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="input mb-3">
+                                                    <label for="country" class="input__label form-label">Số
+                                                        lượng</label><input name="quantity" type="text"
+                                                        class="input__control form-control <?=empty($errors['quantity']) ? '' : 'is-invalid'?>"
+                                                        aria-invalid="false" value="<?=$quantity?>" />
+                                                    <div
+                                                        class="invalid-feedback mt-3 <?=empty($errors['quantity']) ? '' : 'input__error'?>">
+                                                        <?=empty($errors['quantity']) ? "" : $errors['quantity']?>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="input mb-3">
                                                     <label for="discount" class="input__label form-label">Mô
-                                                        tả</label><textarea name="description"
+                                                        tả</label><textarea id="editor" name="description"
                                                         class="input__control form-control <?=empty($errors['description']) ? '' : 'is-invalid'?>"
                                                         aria-invalid="false" value="<?=$description?>"
                                                         rows="10"><?=$description?></textarea>
@@ -275,6 +288,20 @@ foreach ($categories as $row) {
     </div>
 
     <script>
+    ClassicEditor.create(document.querySelector("#editor"), {
+            removePlugins: ['CKFinder', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
+                "EasyImage", "CKFinderUploadAdapter", "CloudServices"
+            ],
+        })
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(
+            (error) => {
+                console.error(error);
+            }
+        );
+
     const thumbnails = document.querySelector('input[name="thumbnails[]"]');
     const previewList = document.querySelector(".preview__list");
     let files = [];
