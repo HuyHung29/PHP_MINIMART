@@ -12,8 +12,10 @@ require_once '../../database/dbhelper.php';
 require_once '../../ultils/ultility.php';
 
 $status = "";
+$user_id = "";
 if (!empty($_GET)) {
     $status = getGet('status');
+    $user_id = getGet("id");
 }
 
 $getOrder = "";
@@ -21,7 +23,11 @@ $getOrder = "";
 if (empty($status) && $status != 0) {
     $getOrder = "SELECT * FROM orders";
 } else {
-    $getOrder = "SELECT * FROM orders WHERE status = '$status'";
+    if (!empty($user_id)) {
+        $getOrder = "SELECT * FROM orders WHERE status = '$status' AND user_id =" . $user_id;
+    } else {
+        $getOrder = "SELECT * FROM orders WHERE status = '$status'";
+    }
 }
 
 $orders = executeResult($getOrder);
@@ -79,19 +85,19 @@ require_once './../inc/header.php';
                         <div class="orders__header">
                             <ul class="orders__tab">
                                 <li class="orders__tab__item <?=$status == "" ? "active" : ""?>">
-                                    <a href="./index.php">Tất cả</a>
+                                    <a href="./index.php<?=empty($user_id) ? "" : "?id=$user_id"?>">Tất cả</a>
                                 </li>
                                 <li class="orders__tab__item <?=$status == 0 ? "active" : ""?>">
-                                    <a href="?status=0">Chờ xác nhận</a>
+                                    <a href="?status=0<?=empty($user_id) ? "" : "&id=$user_id"?>">Chờ xác nhận</a>
                                 </li>
                                 <li class="orders__tab__item <?=$status == 1 ? "active" : ""?>">
-                                    <a href="?status=1">Đang giao</a>
+                                    <a href="?status=1<?=empty($user_id) ? "" : "&id=$user_id"?>">Đang giao</a>
                                 </li>
                                 <li class="orders__tab__item <?=$status == 2 ? "active" : ""?>">
-                                    <a href="?status=2">Đã giao</a>
+                                    <a href="?status=2<?=empty($user_id) ? "" : "&id=$user_id"?>">Đã giao</a>
                                 </li>
                                 <li class="orders__tab__item <?=$status == 3 ? "active" : ""?>">
-                                    <a href="?status=3">Đã hủy</a>
+                                    <a href="?status=3<?=empty($user_id) ? "" : "&id=$user_id"?>">Đã hủy</a>
                                 </li>
                                 <div class="orders__tab__line"></div>
                             </ul>
@@ -250,71 +256,6 @@ foreach ($orders as $row) {
             </div>';
 }
 ?>
-                                        <!-- <div class="orders__list__body__item">
-                                            <div class="orders__list__body__item__products">
-                                                <div class='order__product'>
-                                                    <div class="d-flex align-items-center flex-grow-1 px-4">
-                                                        <p class="order__product__title">
-                                                            bo mysadsadsad sadsadsdsadsasadsadsadsa
-                                                        </p>
-                                                        <img src="../../assets/thumbnail/bomy1.jpg" alt="anh"
-                                                            class='order__product__pic' />
-                                                    </div>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <i class="fas fa-times"></i>
-                                                        <p class="order__product__quantity">
-                                                            5
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class='order__product'>
-                                                    <div class="d-flex align-items-center flex-grow-1 px-4">
-                                                        <p class="order__product__title">
-                                                            bo mysadsadsad sadsadsdsadsasadsadsadsa
-                                                        </p>
-                                                        <img src="../../assets/thumbnail/bomy1.jpg" alt="anh"
-                                                            class='order__product__pic' />
-                                                    </div>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <i class="fas fa-times"></i>
-                                                        <p class="order__product__quantity">
-                                                            5
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="orders__list__body__item__summary text-center">
-                                                <p>
-                                                    500
-                                                    <sup>đ</sup>
-                                                </p>
-                                            </div>
-                                            <div class="orders__list__body__item__address">
-                                                <p>
-                                                    dia chi
-                                                </p>
-                                            </div>
-                                            <div class="orders__list__body__item__info">
-                                                <p>Họ tên: ten</p>
-                                                <p>Email: email</p>
-                                                <p>Ghi chú: email</p>
-                                            </div>
-                                            <div class="orders__list__body__item__status text-center">
-                                                <p class="status waiting">{order.status}</p>
-
-                                                <div class="change-status shadow-lg">
-                                                    <div class="change-status__heading">
-                                                        Thay đổi trạng thái sản phẩm
-                                                    </div>
-                                                    <div class="change-status__item">
-                                                        <p class="status goods">{status}</p>
-                                                    </div>
-                                                    <div class="change-status__item">
-                                                        <p class="status done">{status}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>

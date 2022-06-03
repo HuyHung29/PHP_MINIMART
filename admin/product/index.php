@@ -44,7 +44,7 @@ $number_page = ceil($quantity / $limit);
 
 // Get product
 $products = array();
-$sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
+$sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
 $products = executeResult($sql);
 
 //Get thumbnail
@@ -159,42 +159,40 @@ require_once './../inc/header.php';
                             <?php
 if (!empty($products)) {
     foreach ($products as $row) {
-        if ((int) $row['deleted'] == 0) {
-            echo '<div class="list__item">
-                <div class="list__name list__name--body">
-                    <p>' . $row['title'] . '</p>
-                </div>
-                <div class="list__pictures list__pictures--body">';
-            foreach ($list as $item) {
-                if ($item['product_id'] == $row['id']) {
-                    echo "<img src='../../assets/thumbnail/" . $item['thumbnail'] . "' alt='anh' class='img' />";
-                }
+        echo '<div class="list__item">
+            <div class="list__name list__name--body">
+                <p>' . $row['title'] . '</p>
+            </div>
+            <div class="list__pictures list__pictures--body">';
+        foreach ($list as $item) {
+            if ($item['product_id'] == $row['id']) {
+                echo "<img src='../../assets/thumbnail/" . $item['thumbnail'] . "' alt='anh' class='img' />";
             }
-            echo '</div>
-                <div class="list__cate list__cate--body">
-                    <p>' . $row['name'] . '</p>
-                </div>
-                <div class="list__price list__price--body">
-                    <p>' . $row['price'] . ' <sup>đ</sup></p>
-                </div>
-                <div class="list__origin list__origin--body">
-                    <p>' . $row['country'] . '</p>
-                </div>
-                <div class="list__action list__action--body">
-                    <a href="./edit/?id=' . $row['id'] . '">
-                        <button class="btn btn-secondary list__action__btn shadow-none">
-                            Sửa
-                        </button>
-                    </a>
-                    <a href="./delete_product_process.php/?id=' . $row['id'] . '"  class="delete">
-                        <button class="btn btn-secondary list__action__btn shadow-none">
-                            Xóa
-                        </button>
-                    </a>
-
-                </div>
-                </div>';
         }
+        echo '</div>
+            <div class="list__cate list__cate--body">
+                <p>' . $row['name'] . '</p>
+            </div>
+            <div class="list__price list__price--body">
+                <p>' . $row['price'] . ' <sup>đ</sup></p>
+            </div>
+            <div class="list__origin list__origin--body">
+                <p>' . $row['country'] . '</p>
+            </div>
+            <div class="list__action list__action--body">
+                <a href="./edit/?id=' . $row['id'] . '">
+                    <button class="btn btn-secondary list__action__btn shadow-none">
+                        Sửa
+                    </button>
+                </a>
+                <a href="./delete_product_process.php/?id=' . $row['id'] . '"  class="delete">
+                    <button class="btn btn-secondary list__action__btn shadow-none">
+                        Xóa
+                    </button>
+                </a>
+
+            </div>
+            </div>';
     }
 } else {
     echo "<div class='list__body--empty'>

@@ -214,6 +214,7 @@
 		@include flex();
 		margin-top: 20px;
 		column-gap: 15px;
+		flex-wrap: nowrap;
 	}
 
 	&__item {

@@ -18,6 +18,14 @@ $cart = array();
 
 if (isset($_SESSION['cart'])) {
     $cart = $_SESSION['cart'];
+    $product_ids = array();
+    foreach ($_SESSION['cart'] as $row) {
+        $product_ids[] = $row['pro_id'];
+    }
+    $list_id = "(" . implode(",", $product_ids) . ")";
+
+    $sql = "SELECT id, quantity FROM product WHERE id IN $list_id";
+    $products = executeResult($sql);
 }
 
 require_once './ultils/change_quantity.php';
@@ -71,6 +79,13 @@ if (!(count($cart) > 0)) {
                 <?php
 $sum = 0;
 foreach ($cart as $row) {
+    $count = 0;
+    foreach ($products as $item) {
+        if ($row['pro_id'] == $item['id']) {
+            $count = $item['quantity'];
+            break;
+        }
+    }
     $sum += (int) $row['total'];
     echo '<div class="cart-page__item">
             <div class="cart-page__item__product">
@@ -89,7 +104,7 @@ foreach ($cart as $row) {
             <div class="cart-page__item__quantity">
                 <form method="POST" class="cart-page__item__quantity__calculate">
                     <input name="id" type="hidden" value="' . $row['pro_id'] . '">
-                    <input name="quantity" type="number" value="' . $row['quantity'] . '">
+                    <input data-quantity=' . $count . ' name="quantity" type="number" value="' . $row['quantity'] . '">
                     <button type="submit" class="btn btn-secondary btn-change-quantity">Đổi</button>
                 </form>
             </div>
@@ -119,13 +134,16 @@ foreach ($cart as $row) {
 </div>
 
 <script>
-const input = document.querySelector('input[name="quantity"]');
+const inputs = document.querySelectorAll('input[name="quantity"]');
 
-input.addEventListener("change", () => {
-    if (input.value <= 0) {
-        input.value = 1;
-    }
+inputs?.forEach(input => {
+    input.addEventListener("blur", () => {
+        if (input.value <= 0) {
+            input.value = 1;
+        } else if (+input.value > +input.dataset.quantity) input.value = +input.dataset.quantity;
+    })
 })
+
 
 const cartBtns = document.querySelectorAll('.cart-page__item__action__link');
 

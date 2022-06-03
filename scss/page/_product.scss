@@ -400,6 +400,13 @@
 	}
 
 	&-cart {
+		&__error {
+			font-size: 1.4rem;
+			padding: 10px 0;
+			margin-top: 20px;
+			color: var(--bs-danger);
+		}
+
 		&__list {
 			margin-left: 20px;
 			padding-left: 30px;
@@ -436,8 +443,8 @@
 					top: 0;
 					right: -10px;
 					@include flex(center, center);
-					width: 20px;
-					height: 20px;
+					width: 30px;
+					height: 30px;
 					background-color: $secondary-color;
 					color: white;
 					border-radius: 50%;

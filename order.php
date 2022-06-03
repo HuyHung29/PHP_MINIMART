@@ -157,6 +157,8 @@ foreach ($cart as $row) {
                                             <p>Tổng cộng</p>
                                             <p><?=number_format($sum)?> <sup>đ</sup></p>
                                         </div>
+                                        <p class="product-cart__error">
+                                            <?=!empty($errors['quantity']) ? $errors['quantity'] : ""?></p>
                                         <input type="hidden" class="d-none" name="total_money" value="<?=$sum?>">
                                         <div class="product-cart__action">
                                             <a href="./cart.php"><i class="fa-solid fa-chevron-left"></i> Quay về giỏ

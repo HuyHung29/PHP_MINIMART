@@ -50,14 +50,15 @@ if (!empty($orders)) {
 $getOrderDetail = "";
 
 if (!empty($ids)) {
-    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id WHERE order_id IN $ids";
+    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, order_detail.quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id WHERE order_id IN $ids";
 } else {
-    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id";
+    $getOrderDetail = "SELECT order_id, product_id, title, order_detail.price, order_detail.quantity, total FROM order_detail INNER JOIN product ON order_detail.product_id = product.id";
 }
 
 $orderDetails = executeResult($getOrderDetail);
 
 $pro_ids = array();
+$id_pro = "";
 if (!empty($orderDetails)) {
     foreach ($orderDetails as $row) {
         $pro_ids[] = $row['product_id'];
@@ -66,7 +67,9 @@ if (!empty($orderDetails)) {
     $id_pro = "(" . implode(',', $pro_ids) . ")";
 }
 
-$thumbnails = executeResult("SELECT * FROM galery WHERE product_id IN $id_pro");
+if (!empty($id_pro)) {
+    $thumbnails = executeResult("SELECT * FROM galery WHERE product_id IN $id_pro");
+}
 
 ?>
 

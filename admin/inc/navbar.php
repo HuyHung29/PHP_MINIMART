@@ -103,6 +103,11 @@
                         Mật khẩu
                     </a>
                 </li>
+                <li class="navbar--admin__subitem">
+                    <a href="./../user/accounts.php" class="navbar--admin__sublink">
+                        Tài khoản người dùng
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>

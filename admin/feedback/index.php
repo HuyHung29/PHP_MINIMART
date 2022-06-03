@@ -10,7 +10,19 @@ if (isset($_SESSION['login'])) {
 }
 
 require_once '../../database/dbhelper.php';
-$sql = "SELECT * FROM feedback";
+require_once '../../ultils/ultility.php';
+$user_id = "";
+if (!empty($_GET)) {
+    $user_id = getGet('id');
+}
+
+$sql = "";
+
+if (empty($user_id)) {
+    $sql = "SELECT * FROM feedback";
+} else {
+    $sql = "SELECT * FROM feedback WHERE user_id = $user_id";
+}
 
 $feedbacks = executeResult($sql);
 ?>

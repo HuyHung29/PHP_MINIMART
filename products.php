@@ -37,9 +37,9 @@ $number_page = ceil($quantity / $limit);
 // Get product
 $products = array();
 if (empty($cateName)) {
-    $sql = "SELECT product.id, title, unit, price, discount, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 LIMIT " . $page_first_result . "," . $limit;
+    $sql = "SELECT product.id, title, unit, price, discount, quantity, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 LIMIT " . $page_first_result . "," . $limit;
 } else {
-    $sql = "SELECT product.id, title, country, unit, price, discount, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND name = '$cateName' LIMIT " . $page_first_result . "," . $limit;
+    $sql = "SELECT product.id, title, country, unit, price, discount, quantity, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND name = '$cateName' LIMIT " . $page_first_result . "," . $limit;
 }
 $products = executeResult($sql);
 
@@ -137,10 +137,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     } else {
@@ -165,10 +165,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     }

@@ -1078,6 +1078,7 @@ a:hover {
   flex-wrap: wrap;
   margin-top: 20px;
   column-gap: 15px;
+  flex-wrap: nowrap;
 }
 
 .preview__item {
@@ -2433,6 +2434,13 @@ a:hover {
   margin-right: 0;
 }
 
+.product-cart__error {
+  font-size: 1.4rem;
+  padding: 10px 0;
+  margin-top: 20px;
+  color: var(--bs-danger);
+}
+
 .product-cart__list {
   margin-left: 20px;
   padding-left: 30px;
@@ -2478,8 +2486,8 @@ a:hover {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background-color: #ee4d2d;
   color: white;
   border-radius: 50%;
@@ -3409,6 +3417,194 @@ a:hover {
   color: #ff8e4a;
 }
 
+.account-product {
+  background-color: white;
+  padding: 20px 25px;
+  border-radius: 2px;
+}
+
+.account-product__header {
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.account-product__header h2 {
+  font-weight: 400;
+  padding-bottom: 20px;
+  font-size: 2rem;
+}
+
+.account-product__action {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+.account-product__action__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.account-product__action__header h3 {
+  margin-bottom: 0;
+  font-size: 1.6rem;
+}
+
+.account {
+  border: 1px solid #e9e9e9;
+}
+
+.account__name {
+  flex: 0 0 15%;
+  max-width: 15%;
+}
+
+.account__name p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__email {
+  flex: 0 0 15%;
+  max-width: 15%;
+  text-align: center;
+}
+
+.account__email p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__phone {
+  flex: 0 0 15%;
+  max-width: 15%;
+  text-align: center;
+}
+
+.account__phone p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__order {
+  flex: 0 0 15%;
+  max-width: 15%;
+  text-align: center;
+}
+
+.account__order p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__feedback {
+  flex: 0 0 15%;
+  max-width: 15%;
+  text-align: center;
+}
+
+.account__feedback p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__status {
+  flex: 0 0 10%;
+  max-width: 10%;
+  text-align: center;
+}
+
+.account__status p {
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+.account__action {
+  flex: 0 0 15%;
+  max-width: 15%;
+  text-align: center;
+}
+
+.account__action__btn {
+  background-color: #ff8e4a;
+  border-color: #ff8e4a;
+  padding: 8px 10px;
+  font-size: 1.4rem;
+}
+
+.account__action__btn:hover {
+  color: #ff8e4a;
+  background-color: white;
+  border-color: #ff8e4a;
+}
+
+.account__action__btn:focus {
+  background-color: #ff8e4a;
+  border-color: #ff8e4a;
+  color: white;
+}
+
+.account__action__btn i {
+  margin-right: 5px;
+}
+
+.account__action__btn--enable {
+  background-color: #96bd1a;
+  border-color: #96bd1a;
+  padding: 8px 10px;
+  font-size: 1.4rem;
+}
+
+.account__action__btn--enable:hover {
+  color: #96bd1a;
+  background-color: white;
+  border-color: #96bd1a;
+}
+
+.account__action__btn--enable:focus {
+  background-color: #96bd1a;
+  border-color: #96bd1a;
+  color: white;
+}
+
+.account__action__btn--enable i {
+  margin-right: 5px;
+}
+
+.account__header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 1.4rem;
+  background-color: #f6f6f6;
+  padding: 20px 0;
+  border-radius: 3px;
+  color: #888888;
+  transition: 0.2s ease-in;
+}
+
+.account__header--hidden {
+  display: none;
+}
+
+.account__item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  font-size: 1.4rem;
+  transition: 0.2s ease-in;
+}
+
+.account__item:nth-child(even) {
+  background-color: rgba(204, 204, 204, 0.2);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -3829,6 +4025,13 @@ a:hover {
   margin-right: 0;
 }
 
+.product-cart__error {
+  font-size: 1.4rem;
+  padding: 10px 0;
+  margin-top: 20px;
+  color: var(--bs-danger);
+}
+
 .product-cart__list {
   margin-left: 20px;
   padding-left: 30px;
@@ -3874,8 +4077,8 @@ a:hover {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background-color: #ee4d2d;
   color: white;
   border-radius: 50%;

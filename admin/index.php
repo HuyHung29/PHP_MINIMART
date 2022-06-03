@@ -269,6 +269,11 @@ $feedbacks = executeResult("SELECT * FROM feedback");
                                         Mật khẩu
                                     </a>
                                 </li>
+                                <li class="navbar--admin__subitem">
+                                    <a href="./user/accounts.php" class="navbar--admin__sublink">
+                                        Tài khoản người dùng
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -309,7 +314,7 @@ $feedbacks = executeResult("SELECT * FROM feedback");
                                     <p class="admin__home__item__text">Sản phẩm tạm khóa</p>
                                 </a>
                                 <a href="./category/" class="admin__home__item">
-                                    <p class="admin__home__item__number"><?=count($categories)?></p>
+                                    <p class="admin__home__item__number"><?=count($categories) - 1?></p>
                                     <p class="admin__home__item__text">Danh mục</p>
                                 </a>
                                 <a href="./feedback/" class="admin__home__item">

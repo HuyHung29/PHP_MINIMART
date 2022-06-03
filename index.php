@@ -64,14 +64,14 @@ include "./navbar.php";
         <div class="home__slider col-md-12">
             <div class="home__link--wrap">
                 <a class="home__link"
-                    href="./products.php?cate=<?=urlencode($categories[0]['name'])?>"><?=$categories[0]['name']?></a>
+                    href="./products.php?cate=<?=urlencode($categories[1]['name'])?>"><?=$categories[1]['name']?></a>
             </div>
             <div class="row">
                 <?php
-$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[0]['id'] . "' LIMIT 5";
+$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[1]['id'] . "' LIMIT 5";
 $products = executeResult($selectProduct);
 foreach ($products as $row) {
-    $newPrice = $row['price'] - $row['price'] * $row['discount'] / 100;
+    $newPrice = (int) $row['price'] - (int) $row['price'] * (int) $row['discount'] / 100;
     $thumbnail = "";
     foreach ($list as $img) {
         if ($img['product_id'] == $row['id']) {
@@ -102,10 +102,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     } else {
@@ -130,10 +130,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     }
@@ -182,10 +182,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+        hàng</button>';
+        echo '</div>
         </div>
         </form>';
     } else {
@@ -210,10 +210,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     }
@@ -262,10 +262,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     } else {
@@ -290,10 +290,10 @@ foreach ($products as $row) {
             <input type="text" class="d-none" name="thumbnail" value="' . $thumbnail . '">
             <input type="text" class="d-none" name="price" value="' . $newPrice . '">
             <input type="text" class="d-none" name="quantity" value="1">
-            <div class="add-cart-btn--wrap">
-                <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
-                    hàng</button>
-            </div>
+            <div class="add-cart-btn--wrap">';
+        echo $row['quantity'] == 0 ? '<button type="button" class="add-cart-btn shadow-none btn btn-secondary">Hết hàng</button>' : '<button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm vào giỏ
+            hàng</button>';
+        echo '</div>
         </div>
         </form>';
     }

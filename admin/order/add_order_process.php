@@ -33,6 +33,26 @@ if (!empty($_POST)) {
         $errors['address'] = "Vui lòng nhập địa chỉ của bạn";
     }
 
+    $product_ids = array();
+    foreach ($_SESSION['cart'] as $row) {
+        $product_ids[] = $row['pro_id'];
+    }
+    $list_id = "(" . implode(",", $product_ids) . ")";
+
+    $sql = "SELECT id, quantity FROM product WHERE id IN $list_id";
+    $products = executeResult($sql);
+
+    foreach ($_SESSION['cart'] as $row) {
+        foreach ($products as $item) {
+            if ($row['pro_id'] == $item['id']) {
+                if ($row['quantity'] > $item['quantity']) {
+                    $errors['quantity'] = "Số lượng sản phẩm vượt quá số lượng sản phẩm trong kho";
+                    break;
+                }
+            }
+        }
+    }
+
     if (empty($errors)) {
         $sql = "INSERT INTO orders (user_id, name, email, phone, address, note, order_date, total_money)
                 VALUES ('$user_id', '$name', '$email', '$phone', '$address', '$note', '$date', '$total_money')";
@@ -56,7 +76,7 @@ if (!empty($_POST)) {
             if ($check) {
                 unset($_SESSION['cart']);
                 echo "<script>alert('Đặt hàng thành công')</script>";
-                echo "<script>window.location='./index.php'</script>";
+                echo "<script>window.location='./../../user.php?mode=order'</script>";
             }
         }
     }

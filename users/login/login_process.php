@@ -23,7 +23,7 @@ if (!empty($_POST)) {
 
     if (empty($error)) {
 
-        $sql = "SELECT * FROM user WHERE email = '$email' AND password = '$password'";
+        $sql = "SELECT * FROM user WHERE email = '$email' AND password = '$password' AND disable = 0";
 
         $result = executeResult($sql, true);
 
@@ -33,6 +33,9 @@ if (!empty($_POST)) {
             if ($check == "on") {
                 setcookie('email', $email, time() + 86400 * 30, "/");
                 setcookie('password', $password, time() + 86400 * 30, "/");
+            } else {
+                setcookie('email', null, -10, "/");
+                setcookie('password', null, -10, "/");
             }
 
             header('location: ../../../../../MiniMart');

@@ -20,7 +20,7 @@ if (!empty($_GET)) {
     $productID = getGet('id');
 }
 
-$sql = "SELECT product.id, title, country, price, discount, description, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND product.id = '$productID'";
+$sql = "SELECT product.id, title, country, price, discount, description, quantity, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND product.id = '$productID'";
 
 $product = executeResult($sql, true);
 $oldPrice = (int) $product['price'];
@@ -112,6 +112,10 @@ if ($product['discount'] != 0) {
                                 <p class="product-detail__page__info__text">Xuất sứ</p>
                                 <p class="product-detail__page__info__text--dark"><?=$product['country']?></p>
                             </div>
+                            <div class="d-flex align-items-center mt-4">
+                                <p class="product-detail__page__info__text">Số lượng còn</p>
+                                <p class="product-detail__page__info__text--dark"><?=$product['quantity']?></p>
+                            </div>
                             <div class="product-detail__page__info__quantity">
                                 <p class="product-detail__page__info__text">Số lượng </p>
                                 <div class="product__quantity">
@@ -152,7 +156,7 @@ if ($product['discount'] != 0) {
                     <h2>Mô tả sản phẩm</h2>
                 </div>
                 <div class="description">
-                    <?=$product['description']?>
+                    <?=html_entity_decode($product['description'])?>
                 </div>
             </section>
         </div>
@@ -162,6 +166,7 @@ if ($product['discount'] != 0) {
 
 <script>
 // Handle actice thumbnail
+const count = "<?=$product['quantity']?>";
 const thumbnails = document.querySelectorAll(".list-thumbnail__item");
 const currThumbnail = document.querySelector(".current-img");
 thumbnails[0].classList.add('active');
@@ -181,6 +186,12 @@ const minus = document.querySelector('.minus');
 const plus = document.querySelector('.plus');
 const quantity = document.querySelector('.product__quantity__value');
 
+quantity.addEventListener("blur", () => {
+    if (quantity.value <= 0) {
+        quantity.value = 1;
+    } else if (quantity.value > count) quantity.value = +count;
+})
+
 minus.addEventListener("click", () => {
     if (quantity.value > 1) {
         quantity.value = +quantity.value - 1;
@@ -190,7 +201,11 @@ minus.addEventListener("click", () => {
 })
 
 plus.addEventListener("click", () => {
-    quantity.value = +quantity.value + 1;
+    if (quantity.value >= +count) {
+        quantity.value = +count;
+
+    } else
+        quantity.value = +quantity.value + 1;
 })
 </script>
 <?php
