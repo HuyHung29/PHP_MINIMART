@@ -111,3 +111,105 @@
 		}
 	}
 }
+
+.revenue {
+	&__by {
+		@include flex();
+		position: relative;
+		margin-bottom: 20px;
+
+		&__item {
+			margin-right: 10px;
+		}
+
+		&__link {
+			display: inline-block;
+			font-size: 1.6rem;
+			transition: 0.25s linear;
+			padding: 10px;
+			cursor: pointer;
+
+			&.active {
+				color: $primary-color;
+			}
+		}
+	}
+	&__line {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 0;
+		border: 1px solid $primary-color;
+		transition: 0.25s linear;
+	}
+
+	&__info {
+		margin-top: 40px;
+		@include flex(center, space-around);
+
+		&__unit {
+			flex: 0 0 100%;
+			max-width: 100%;
+			text-align: right;
+			font-size: 2rem;
+			color: $primary-color;
+			margin: 10px 0 20px;
+		}
+
+		&__item {
+			flex: 0 0 50%;
+			max-width: 50%;
+			@include flex(center, center);
+			flex-direction: column;
+			&__title {
+				font-size: 1.6rem;
+				font-weight: 500;
+				margin-top: 20px;
+			}
+		}
+
+		&__circle {
+			@include flex(center, center);
+
+			width: 300px;
+			height: 300px;
+			border: 8px solid $secondary-color;
+			border-radius: 50%;
+
+			& p {
+				font-size: 2.6rem;
+				color: $sub-text-color;
+			}
+
+			&--delete {
+				border-color: $secondary-color;
+			}
+
+			&--done {
+				border-color: $primary-color;
+			}
+		}
+	}
+
+	&__form {
+		display: none;
+		align-items: stretch;
+
+		&.active {
+			display: flex;
+		}
+
+		& input {
+			flex: 1;
+			font-size: 1.4rem;
+			padding: 4px 10px;
+			margin-right: 20px;
+		}
+
+		& .form-select {
+			font-size: 1.4rem;
+			flex: 1;
+			margin-right: 20px;
+		}
+	}
+}
