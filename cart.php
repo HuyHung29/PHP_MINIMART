@@ -16,7 +16,7 @@ require_once './ultils/ultility.php';
 
 $cart = array();
 
-if (isset($_SESSION['cart'])) {
+if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
     $cart = $_SESSION['cart'];
     $product_ids = array();
     foreach ($_SESSION['cart'] as $row) {
@@ -137,6 +137,8 @@ foreach ($cart as $row) {
 const inputs = document.querySelectorAll('input[name="quantity"]');
 
 inputs?.forEach(input => {
+    if (+input.value > +input.dataset.quantity) input.value = input.dataset.quantity;
+
     input.addEventListener("blur", () => {
         if (input.value <= 0) {
             input.value = 1;

@@ -73,10 +73,25 @@ if (!empty($_POST)) {
                         (product_id, order_id, price, quantity, total) VALUES " . implode(',', $item);
             $check = execute($insert);
 
-            if ($check) {
+            $listQuantity = array();
+            foreach ($products as $row) {
+                $newQuantity = 0;
+                foreach ($_SESSION['cart'] as $item) {
+                    if ($row['id'] == $item['pro_id']) {
+                        $newQuantity = (int) $row['quantity'] - (int) $item['quantity'];
+                        $listQuantity[] = "WHEN id = " . $row['id'] . " THEN $newQuantity";
+                        break;
+                    }
+                }
+            }
+
+            $update = "UPDATE product SET updated_At = '$date', quantity = CASE " . implode(" ", $listQuantity) . " END WHERE id IN $list_id";
+            $check2 = execute($update);
+
+            if ($check && $check2) {
                 unset($_SESSION['cart']);
                 echo "<script>alert('Đặt hàng thành công')</script>";
-                echo "<script>window.location='./../../user.php?mode=order'</script>";
+                echo "<script>window.location='./../../../MiniMart/user.php?mode=order'</script>";
             }
         }
     }

@@ -168,6 +168,7 @@ if (count($orders) > 0) {
                                         <?php
 foreach ($orders as $row) {
     $status = "";
+    $order_date = date_create($row['order_date']);
     switch ($row['status']) {
         case 0:
             $status = "Chờ xác nhận";
@@ -213,7 +214,7 @@ foreach ($orders as $row) {
     echo '</div>
                 <div class="orders__list__body__item__summary text-center">
                     <p>
-                        ' . number_format($row['total_money']) . '
+                        ' . number_format((int) $row['total_money']) . '
                         <sup>đ</sup>
                     </p>
                 </div>
@@ -227,8 +228,10 @@ foreach ($orders as $row) {
                     <p>Email: ' . $row['email'] . '</p>
                     <p>Số điện thoại: ' . $row['phone'] . '</p>
                     <p>Ghi chú: ' . $row['note'] . '</p>
+                    <p>Ngày tạo đơn: ' . date_format($order_date, "d-m-Y") . '</p>
                 </div>
                 <div class="orders__list__body__item__status text-center">
+                    <p class="reason">Lí do hủy đơn: ' . $row['reason'] . '</p>
                     <p class="status _' . $row['status'] . '">' . $status . '</p>';
     if ($row['status'] == 0) {
         echo '<div class="change-status shadow-lg">
@@ -241,6 +244,9 @@ foreach ($orders as $row) {
                         <div class="change-status__item">
                             <a href="./change_order_status.php?id=' . $row['id'] . '&status=2" class="status _2">Đã giao</a>
                         </div>
+                        <div class="change-status__item">
+                            <p data-id="' . $row['id'] . '" class="status _3 delete">Đã hủy</p>
+                        </div>
                     </div>';
     } elseif ($row['status'] == 1) {
         echo '<div class="change-status shadow-lg">
@@ -249,6 +255,9 @@ foreach ($orders as $row) {
                         </div>
                         <div class="change-status__item mx-auto">
                             <a href="./change_order_status.php?id=' . $row['id'] . '&status=2" class="status _2">Đã giao</a>
+                        </div>
+                        <div class="change-status__item mx-auto">
+                            <p data-id="' . $row['id'] . '" class="status _3 delete">Đã hủy</p>
                         </div>
                     </div>';
     }
@@ -290,6 +299,20 @@ foreach ($orders as $row) {
             line.style.width = tab.offsetWidth + "px";
         })
     });
+
+    const delete_btns = document.querySelectorAll(".delete");
+
+    delete_btns?.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+                const mess = prompt('Nhập lí do hủy đơn');
+                if (mess) {
+                    window.location =
+                        `./change_order_status.php?id=${btn.dataset.id}&status=3&mess=${encodeURI(mess)}`;
+                } else alert("Vui lòng nhập lí do hủy đơn");
+            }
+        })
+    })
     </script>
 </body>
 

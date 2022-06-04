@@ -84,8 +84,12 @@ require_once './../inc/header.php';
                                         <p>Số điện thoại</p>
                                     </div>
                                     <div class="category-list__content__body__list__item__update"
-                                        style="flex: 0 0 35%; max-width: 35%;">
+                                        style="flex: 0 0 20%; max-width: 20%;">
                                         <p>Nội dung</p>
+                                    </div>
+                                    <div class="category-list__content__body__list__item__update"
+                                        style="flex: 0 0 15%; max-width: 15%;">
+                                        <p>Hành động</p>
                                     </div>
                                 </div>
                                 <?php
@@ -106,10 +110,17 @@ foreach ($feedbacks as $row) {
                                         ' . $row['phone'] . '
                                     </p>
                                 </div>
-                                <div class="category-list__content__body__list__item__update" style="flex: 0 0 35%; max-width: 35%; text-align: left;">
+                                <div class="category-list__content__body__list__item__update" style="flex: 0 0 20%; max-width: 20%; text-align: left;">
                                     <p>
                                         ' . $row['feedback'] . '
                                     </p>
+                                </div>
+                                <div class="category-list__content__body__list__item__update text-center" style="flex: 0 0 15%; max-width: 15%; text-align: left;">
+                                    <a href="./delete_feedback_process.php/?id=' . $row['id'] . '"  class="delete">
+                                        <button class="btn btn-secondary list__action__btn shadow-none ml-0">
+                                            Xóa
+                                        </button>
+                                    </a>
                                 </div>
             </div>';
 }
@@ -125,6 +136,18 @@ foreach ($feedbacks as $row) {
 </div>
 </div>
 </div>
+
+<script>
+const delete_btns = document.querySelectorAll('.delete');
+
+delete_btns?.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        if (!confirm('Bạn có muốn xóa phản hồi này?')) {
+            e.preventDefault();
+        }
+    })
+})
+</script>
 </body>
 
 </html>

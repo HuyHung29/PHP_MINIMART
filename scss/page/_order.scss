@@ -163,13 +163,14 @@
 				}
 
 				&__summary {
-					flex: 0 0 10%;
-					max-width: 10%;
+					flex: 0 0 15%;
+					max-width: 15%;
+					text-align: center;
 				}
 
 				&__address {
-					flex: 0 0 15%;
-					max-width: 15%;
+					flex: 0 0 20%;
+					max-width: 20%;
 
 					& p {
 						padding: 0 20px;
@@ -178,11 +179,12 @@
 				}
 
 				&__info {
-					flex: 0 0 30%;
-					max-width: 30%;
+					flex: 0 0 20%;
+					max-width: 20%;
 
 					& p {
 						margin-bottom: 10px;
+						line-height: 2rem;
 					}
 				}
 
@@ -192,12 +194,18 @@
 					position: relative;
 					cursor: pointer;
 
+					& .reason {
+						margin-bottom: 10px;
+						line-height: 1.8rem;
+					}
+
 					& .status {
 						color: white;
 						border-radius: 3px;
 						padding: 5px 10px;
 						margin: 0 10px;
 						cursor: pointer;
+						@include flex(center, center);
 
 						&._0 {
 							background-color: var(--bs-yellow);
@@ -271,9 +279,8 @@
 						}
 
 						&__item {
-							flex: 0 0 50%;
-							max-width: 50%;
-							padding: 0 20px;
+							flex: 0 0 33.3333%;
+							max-width: 33.3333%;
 							display: block;
 						}
 					}

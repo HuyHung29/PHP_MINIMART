@@ -128,10 +128,10 @@ if ($product['discount'] != 0) {
                             <input type="text" class="d-none" name="title" value="<?=$product['title']?>">
                             <input type="text" class="d-none" name="thumbnail" value="<?=$thumbnail[0]['thumbnail']?>">
                             <input type="text" class="d-none" name="price" value="<?=$newPrice?>">
-                            <button type="submit" class="add-cart-btn shadow-none btn btn-secondary">Thêm
-                                vào giỏ
-                                hàng
-                            </button>
+                            <?=$product['quantity'] > 0 ? "<button type='submit' class='add-cart-btn shadow-none btn btn-secondary'>Thêm
+                                vào giỏ hàng
+                            </button>" : "<button type='button' class='add-cart-btn shadow-none btn btn-secondary'>Hết hàng
+                        </button>"?>
                             <div class="product-detail__page__info__share">
                                 <h3 class="product-detail__page__info__share__title">Chia sẻ</h3>
                                 <div class="product-detail__page__info__share__list">

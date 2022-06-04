@@ -302,9 +302,9 @@ foreach ($orders as $row) {
                     </div>';
         }
     }
-    echo '<div class="user__purchase__item__action">
-                <a href="./admin/order/delete_order_process.php?id=' . $row['id'] . '" class="delete--btn btn btn-secondary buy-btn mt-0 ' . ($row['status'] == 0 ? "" : "d-none") . '">Hủy đơn</a>
-                <p class="user__purchase__item__sum">Tổng số tiền: <span>' . number_format($row['total_money']) . '<sup>đ</sup></span></p>
+    echo '<div class="user__purchase__item__action">';
+    echo $row['status'] != 2 && $row['status'] != 3 ? '<p data-id="' . $row['id'] . '" class="delete--btn btn btn-secondary buy-btn mt-0">Hủy đơn</p>' : "";
+    echo '<p class="user__purchase__item__sum">Tổng số tiền: <span>' . number_format($row['total_money']) . '<sup>đ</sup></span></p>
             </div>
         </div>';
 }
@@ -333,12 +333,16 @@ links.forEach(link => {
 })
 
 
-const btns = document.querySelectorAll('.delete--btn');
+const delete_btns = document.querySelectorAll('.delete--btn');
 
-btns.forEach(btn => {
+delete_btns.forEach(btn => {
     btn.addEventListener("click", (e) => {
-        if (!confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
-            e.preventDefault();
+        if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+            const mess = prompt('Nhập lí do hủy đơn');
+            if (mess) {
+                window.location =
+                    `./admin/order/delete_order_process.php?id=${btn.dataset.id}&mess=${encodeURI(mess)}`;
+            } else alert("Vui lòng nhập lí do hủy đơn");
         }
     })
 })
