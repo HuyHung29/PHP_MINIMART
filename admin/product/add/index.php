@@ -1,4 +1,19 @@
 <?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../../../users/login');
+    die();
+}
+
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../../users/login');
+    die();
+}
+
 require_once './add_product_process.php';
 
 $sql = "SELECT * FROM category";
@@ -24,7 +39,6 @@ $categories = executeResult($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="../../../dist/css/style.css" />
     <title>Thêm sản phẩm</title>
 </head>
@@ -43,7 +57,7 @@ $categories = executeResult($sql);
                 <div class="header--admin__side">
                     <div class="header--admin__user">
                         <i class="fas fa-user-circle"></i>
-                        <p>huy hung</p>
+                        <p><?=$user['name']?></p>
                     </div>
                     <div class="header--admin__task">
                         <div class="header--admin__task__list">
@@ -258,10 +272,11 @@ foreach ($categories as $row) {
                                             <div class="col-md-12">
                                                 <div class="input mb-3">
                                                     <label for="discount" class="input__label form-label">Mô
-                                                        tả</label><textarea id="editor" name="description"
+                                                        tả</label>
+                                                    <textarea id="editor" name="description"
                                                         class="input__control form-control <?=empty($errors['description']) ? '' : 'is-invalid'?>"
-                                                        aria-invalid="false" value="<?=$description?>"
-                                                        rows="10"><?=$description?></textarea>
+                                                        aria-invalid="false"
+                                                        rows="10"><?=$description = str_replace('&', '&amp;', $description)?></textarea>
                                                     <div
                                                         class="invalid-feedback mt-3 <?=empty($errors['description']) ? '' : 'input__error'?>">
                                                         <?=empty($errors['description']) ? "" : $errors['description']?>
@@ -271,8 +286,9 @@ foreach ($categories as $row) {
                                             <div class="text-center col-md-12">
                                                 <button type="submit"
                                                     class="form__btn form__btn--success btn btn-secondary">
-                                                    Tạo mới</button><button type="reset"
-                                                    class="form__btn form__btn--danger btn btn-secondary">
+                                                    Tạo mới</button>
+                                                <button type="reset"
+                                                    class="form__btn form__btn--danger btn btn-secondary exit-btn">
                                                     Hủy
                                                 </button>
                                             </div>
@@ -287,20 +303,16 @@ foreach ($categories as $row) {
         </div>
     </div>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+
     <script>
-    ClassicEditor.create(document.querySelector("#editor"), {
-            removePlugins: ['CKFinder', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
-                "EasyImage", "CKFinderUploadAdapter", "CloudServices"
-            ],
-        })
-        .then(editor => {
+    ClassicEditor.create(document.querySelector("#editor"))
+        .then((editor) => {
             console.log(editor);
         })
-        .catch(
-            (error) => {
-                console.error(error);
-            }
-        );
+        .catch((error) => {
+            console.error(error);
+        });
 
     const thumbnails = document.querySelector('input[name="thumbnails[]"]');
     const previewList = document.querySelector(".preview__list");
@@ -318,6 +330,10 @@ foreach ($categories as $row) {
             previewList.appendChild(li);
         });
     });
+
+    document.querySelector('.exit-btn')?.addEventListener("click", () => {
+        history.back();
+    })
     </script>
 </body>
 

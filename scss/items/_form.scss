@@ -245,6 +245,33 @@
 
 .ck-editor__editable {
 	min-height: 300px;
+	font-size: 1.4rem !important;
+	font-family: "Roboto", sans-serif !important;
+}
+
+.ck-editor__editable ul {
+	list-style-type: disc;
+	padding-right: 20px;
+}
+
+.ck-editor__editable ol {
+	list-style-type: decimal;
+	padding-right: 20px;
+}
+
+.ck-editor__editable h2 {
+	font-size: 3rem !important;
+	font-weight: 500;
+}
+
+.ck-editor__editable h3 {
+	font-size: 2rem !important;
+	font-weight: 500;
+}
+
+.ck-editor__editable h4 {
+	font-size: 1.4rem !important;
+	font-weight: 500;
 }
 
 .ck-editor__editable_inline p {

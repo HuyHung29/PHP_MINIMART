@@ -1,4 +1,19 @@
 <?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../../../users/login');
+    die();
+}
+
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../../users/login');
+    die();
+}
+
 require_once './edit_product_process.php';
 
 $sql = "SELECT * FROM category";
@@ -43,7 +58,7 @@ $categories = executeResult($sql);
                 <div class="header--admin__side">
                     <div class="header--admin__user">
                         <i class="fas fa-user-circle"></i>
-                        <p>huy hung</p>
+                        <p><?=$user['name']?></p>
                     </div>
                     <div class="header--admin__task">
                         <div class="header--admin__task__list">
@@ -286,8 +301,9 @@ foreach ($list as $row) {
                                             <div class="text-center col-md-12">
                                                 <button type="submit"
                                                     class="form__btn form__btn--success btn btn-secondary">
-                                                    Lưu lại</button><button type="reset"
-                                                    class="form__btn form__btn--danger btn btn-secondary">
+                                                    Lưu lại</button>
+                                                <button type="reset"
+                                                    class="form__btn form__btn--danger btn btn-secondary exit-btn">
                                                     Hủy
                                                 </button>
                                             </div>
@@ -332,6 +348,10 @@ foreach ($list as $row) {
             previewList.appendChild(li);
         });
     });
+
+    document.querySelector('.exit-btn')?.addEventListener("click", () => {
+        history.back();
+    })
     </script>
 </body>
 

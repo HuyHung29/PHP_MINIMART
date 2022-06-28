@@ -8,6 +8,10 @@ if (isset($_SESSION['login'])) {
     header('location: ../../users/login');
 }
 
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../users/login');
+}
+
 require_once "./change_user_info_process.php";
 ?>
 

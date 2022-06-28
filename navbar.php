@@ -1,5 +1,5 @@
 <?php
-$sql = "Select * FROM category";
+$sql = "Select * FROM category ORDER BY id DESC";
 
 $categories = executeResult($sql);
 ?>

@@ -206,6 +206,7 @@
 						margin: 0 10px;
 						cursor: pointer;
 						@include flex(center, center);
+						height: 100%;
 
 						&._0 {
 							background-color: var(--bs-yellow);

@@ -7,6 +7,10 @@ if (isset($_SESSION['login'])) {
 } else {
     header('location: ../../users/login');
 }
+
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../users/login');
+}
 require_once "./change_password__process.php";
 ?>
 

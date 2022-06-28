@@ -5,7 +5,11 @@ $user = array();
 if (isset($_SESSION['login'])) {
     $user = $_SESSION['login'];
 } else {
-    header('location: ../users/login');
+    header('location: ./../users/login');
+}
+
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ./../users/login');
 }
 
 require_once '../database/dbhelper.php';

@@ -1,4 +1,19 @@
 <?php
+session_start();
+$user = array();
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header('location: ../../../users/login');
+    die();
+}
+
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../../users/login');
+    die();
+}
+
 require_once './add_category_process.php';
 
 ?>
@@ -39,7 +54,7 @@ require_once './add_category_process.php';
                 <div class="header--admin__side">
                     <div class="header--admin__user">
                         <i class="fas fa-user-circle"></i>
-                        <p>huy hung</p>
+                        <p><?=$user['name']?></p>
                     </div>
                     <div class="header--admin__task">
                         <div class="header--admin__task__list">

@@ -8,6 +8,10 @@ if (isset($_SESSION['login'])) {
     header('location: ../../users/login/');
 }
 
+if (empty($user) || $user['role'] != "admin") {
+    header('location: ../../users/login');
+}
+
 require_once '../../database/dbhelper.php';
 require_once '../../ultils/ultility.php';
 
@@ -230,9 +234,9 @@ foreach ($orders as $row) {
                     <p>Ghi chú: ' . $row['note'] . '</p>
                     <p>Ngày tạo đơn: ' . date_format($order_date, "d-m-Y") . '</p>
                 </div>
-                <div class="orders__list__body__item__status text-center">
-                    <p class="reason">Lí do hủy đơn: ' . $row['reason'] . '</p>
-                    <p class="status _' . $row['status'] . '">' . $status . '</p>';
+                <div class="orders__list__body__item__status text-center">';
+    echo !empty($row['reason']) ? '<p class="reason">Lí do hủy đơn: ' . $row['reason'] . '</p>' : "";
+    echo '<p class="status _' . $row['status'] . '">' . $status . '</p>';
     if ($row['status'] == 0) {
         echo '<div class="change-status shadow-lg">
                         <div class="change-status__heading">
@@ -308,7 +312,7 @@ foreach ($orders as $row) {
                 const mess = prompt('Nhập lí do hủy đơn');
                 if (mess) {
                     window.location =
-                        `./change_order_status.php?id=${btn.dataset.id}&status=3&mess=${encodeURI(mess)}`;
+                        `./delete_order_process.php?id=${btn.dataset.id}&mess=${encodeURI(mess)}`;
                 } else alert("Vui lòng nhập lí do hủy đơn");
             }
         })
