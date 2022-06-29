@@ -120,7 +120,7 @@ foreach ($categories as $row) {
                                     </p>
                                 </div>
                                 <div class="category-list__content__body__list__item__action">
-                                    <a href="./edit?id=' . $row['id'] . '">
+                                    <a href="./edit/?id=' . $row['id'] . '">
                                         <button class="btn btn-secondary list__action__btn shadow-none">
                                             Sửa
                                         </button>

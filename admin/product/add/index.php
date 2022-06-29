@@ -16,7 +16,7 @@ if (empty($user) || $user['role'] != "admin") {
 
 require_once './add_product_process.php';
 
-$sql = "SELECT * FROM category";
+$sql = "SELECT * FROM category ORDER BY id DESC";
 
 $categories = executeResult($sql);
 ?>
@@ -275,8 +275,7 @@ foreach ($categories as $row) {
                                                         tả</label>
                                                     <textarea id="editor" name="description"
                                                         class="input__control form-control <?=empty($errors['description']) ? '' : 'is-invalid'?>"
-                                                        aria-invalid="false"
-                                                        rows="10"><?=$description = str_replace('&', '&amp;', $description)?></textarea>
+                                                        aria-invalid="false" rows="10"><?=$description?></textarea>
                                                     <div
                                                         class="invalid-feedback mt-3 <?=empty($errors['description']) ? '' : 'input__error'?>">
                                                         <?=empty($errors['description']) ? "" : $errors['description']?>

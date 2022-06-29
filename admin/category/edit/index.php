@@ -1,4 +1,7 @@
 <?php
+session_start();
+$user = array();
+
 if (isset($_SESSION['login'])) {
     $user = $_SESSION['login'];
 } else {

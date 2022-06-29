@@ -214,8 +214,8 @@ for ($i = 1; $i <= $number_page; $i++) {
 const menu = document.querySelector('.sub-menu__link--not');
 const subMenu = document.querySelector('.second-menu');
 const icon = document.querySelector('.sub-menu__icon');
-const heart = document.querySelector('.product-card__favorite--btn');
-const heartIcon = document.querySelector('.fa-heart');
+const hearts = document.querySelectorAll('.product-card__favorite--btn');
+const heartIcons = document.querySelectorAll('.fa-heart');
 
 menu.addEventListener("click", () => {
     menu.classList.toggle('active');
@@ -223,14 +223,16 @@ menu.addEventListener("click", () => {
     icon.classList.toggle('active');
 })
 
-heart.addEventListener("click", () => {
-    if (heartIcon.classList.contains('far')) {
-        heartIcon.classList.remove('far');
-        heartIcon.classList.add('fas');
-    } else {
-        heartIcon.classList.remove('fas');
-        heartIcon.classList.add('far');
-    }
+hearts.forEach((heart, index) => {
+    heart.addEventListener("click", () => {
+        if (heartIcons[index].classList.contains('far')) {
+            heartIcons[index].classList.remove('far');
+            heartIcons[index].classList.add('fas');
+        } else {
+            heartIcons[index].classList.remove('fas');
+            heartIcons[index].classList.add('far');
+        }
+    })
 })
 </script>
 

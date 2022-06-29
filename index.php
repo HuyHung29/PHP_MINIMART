@@ -224,11 +224,11 @@ foreach ($products as $row) {
         <div class="home__slider col-md-12">
             <div class="home__link--wrap">
                 <a class="home__link"
-                    href="./products.php?cate=<?=urlencode($categories[2]['name'])?>"><?=$categories[2]['name']?></a>
+                    href="./products.php?cate=<?=urlencode($categories[4]['name'])?>"><?=$categories[4]['name']?></a>
             </div>
             <div class="row">
                 <?php
-$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[2]['id'] . "' LIMIT 5";
+$selectProduct = "SELECT * FROM product WHERE cate_id = '" . $categories[4]['id'] . "' LIMIT 5";
 $products = executeResult($selectProduct);
 foreach ($products as $row) {
     $newPrice = (int) $row['price'] - (int) $row['price'] * (int) $row['discount'] / 100;
@@ -303,6 +303,23 @@ foreach ($products as $row) {
         </div>
     </div>
 </div>
+
+<script>
+const hearts = document.querySelectorAll('.product-card__favorite--btn');
+const heartIcons = document.querySelectorAll('.fa-heart');
+
+hearts.forEach((heart, index) => {
+    heart.addEventListener("click", () => {
+        if (heartIcons[index].classList.contains('far')) {
+            heartIcons[index].classList.remove('far');
+            heartIcons[index].classList.add('fas');
+        } else {
+            heartIcons[index].classList.remove('fas');
+            heartIcons[index].classList.add('far');
+        }
+    })
+})
+</script>
 
 
 <?php

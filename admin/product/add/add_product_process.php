@@ -121,12 +121,7 @@ if (!empty($_POST)) {
             }
         }
 
-        if (!empty($errors['thumbnail'])) {
-            $deleteImg = "DELETE FROM galery WHERE product_id = $product_Id";
-            execute($deleteImg);
-            $delete = "DELETE FROM product WHERE id = $product_Id";
-            execute($delete);
-        } else {
+        if (empty($errors)) {
             echo "<script>alert('Thêm sản phẩm thành công')</script>";
             echo "<script>window.location='../index.php'</script>";
             die();

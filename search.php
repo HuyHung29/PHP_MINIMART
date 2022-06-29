@@ -184,6 +184,22 @@ for ($i = 1; $i <= $number_page; $i++) {
         </div>
     </div>
 
+    <script>
+    const hearts = document.querySelectorAll('.product-card__favorite--btn');
+    const heartIcons = document.querySelectorAll('.fa-heart');
+
+    hearts.forEach((heart, index) => {
+        heart.addEventListener("click", () => {
+            if (heartIcons[index].classList.contains('far')) {
+                heartIcons[index].classList.remove('far');
+                heartIcons[index].classList.add('fas');
+            } else {
+                heartIcons[index].classList.remove('fas');
+                heartIcons[index].classList.add('far');
+            }
+        })
+    })
+    </script>
     <?php
 include "./footer.php";
 ?>
