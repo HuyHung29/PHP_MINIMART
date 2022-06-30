@@ -30,7 +30,13 @@ if (!empty($_GET)) {
 
 $page_first_result = ($page - 1) * $limit;
 
-$quantity = count(executeResult("SELECT * FROM product"));
+$quantity = 0;
+
+if (empty($cateName)) {
+    $quantity = count(executeResult("SELECT * FROM product WHERE deleted = 0"));
+} else {
+    $quantity = count(executeResult("SELECT * FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND name = '$cateName'"));
+}
 
 $number_page = ceil($quantity / $limit);
 
@@ -92,12 +98,19 @@ include "./navbar.php";
                         <ul class="second-menu">
                             <?php
 foreach ($categories as $row) {
-    echo '<li class="second-menu__item"><a href="?cate=' . urlencode($row['name']) . '">' . $row['name'] . '</a></li>';
+    if ($cateName == $row['name']) {
+        echo '<li class="second-menu__item active"><a href="?cate=' . urlencode($row['name']) . '">' . $row['name'] . '</a></li>';
+    } else {
+        echo '<li class="second-menu__item"><a href="?cate=' . urlencode($row['name']) . '">' . $row['name'] . '</a></li>';
+    }
+
 }
 ?>
                         </ul>
                     </li>
-                    <li class="sub-menu__item"><a class="sub-menu__link" href="./feedback.php">Liên hệ</a></li>
+                    <li class="sub-menu__item">
+                        <a class="sub-menu__link" href="./feedback.php">Liên hệ</a>
+                    </li>
                 </ul>
             </div>
         </div>

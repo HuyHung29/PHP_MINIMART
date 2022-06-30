@@ -15,7 +15,7 @@ if (empty($user) || $user['role'] != "admin") {
 require_once '../../database/dbhelper.php';
 require_once '../../ultils/ultility.php';
 
-$order_by = $sort = "";
+$order_by = $sort = $search = "";
 
 // Handle pagination
 $limit = 10;
@@ -34,6 +34,7 @@ if (!empty($_GET)) {
     if (empty($page)) {
         $page = 1;
     }
+    $search = urldecode(getGet('search'));
 } else {
     $page = 1;
     $order_by = "price";
@@ -42,13 +43,28 @@ if (!empty($_GET)) {
 
 $page_first_result = ($page - 1) * $limit;
 
-$quantity = count(executeResult("SELECT * FROM product"));
+$quantity = 0;
+
+if (empty($search)) {
+    $quantity = count(executeResult("SELECT * FROM product WHERE deleted = 0"));
+} else {
+    $quantity = count(executeResult("SELECT * FROM product WHERE deleted = 0 AND title LIKE '%$search%'"));
+}
 
 $number_page = ceil($quantity / $limit);
 
 // Get product
 $products = array();
-$sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
+
+$sql = "";
+
+if (empty($search)) {
+    $sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
+    $products = executeResult($sql);
+} else {
+    $sql = "SELECT product.id, cate_id, title, country, price, deleted, name FROM product INNER JOIN category ON product.cate_id = category.id WHERE deleted = 0 AND title LIKE '%$search%' ORDER BY $order_by $sort LIMIT " . $page_first_result . "," . $limit;
+}
+
 $products = executeResult($sql);
 
 //Get thumbnail
@@ -94,6 +110,14 @@ require_once './../inc/header.php';
                             <h3><?=count($products)?> / <?=$quantity?> sản phẩm</h3>
                         </div>
 
+                        <form method="GET" class="input-group search">
+                            <input type="text" class="search__input form-control shadow-none"
+                                placeholder="Nhập tên sản phẩm" name="search">
+                            <button type="submit" class="search__btn shadow-none btn btn-outline-secondary"
+                                type="button" id="button-addon2">Tìm
+                                kiếm</button>
+                        </form>
+
                         <div class="filter">
                             <a href="./add/">
                                 <button class="shadow-none list-product__action__add btn btn-secondary">
@@ -106,29 +130,29 @@ require_once './../inc/header.php';
 
                                 <ul class="filter-task__list shadow-lg">
                                     <li class="filter-task__item">
-                                        <a href="?order=price&sort=DESC"
+                                        <a href="?order=price&sort=DESC&search=<?=urlencode($search)?>"
                                             class="filter-task__link <?=($order_by == 'price' && $sort == 'DESC') ? 'filter-task__link--active' : ''?>">
                                             Giá từ cao đến thấp
                                             <i class="fas fa-sort-amount-down"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="?order=price&sort=ASC"
+                                        <a href="?order=price&sort=ASC&search=<?=urlencode($search)?>"
                                             class="filter-task__link <?=($order_by == 'price' && $sort == 'ASC') ? 'filter-task__link--active' : ''?>">
                                             Giá từ thấp đến cao
                                             <i class="fas fa-sort-amount-up"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="?order=title&sort=ASC"
-                                            class="filter-task__link <?=($order_by == 'name' && $sort == 'ASC') ? 'filter-task__link--active' : ''?>">
+                                        <a href="?order=title&sort=ASC&search=<?=urlencode($search)?>"
+                                            class="filter-task__link <?=($order_by == 'title' && $sort == 'ASC') ? 'filter-task__link--active' : ''?>">
                                             Tên từ A - Z
                                             <i class="fas fa-sort-alpha-down"></i>
                                         </a>
                                     </li>
                                     <li class="filter-task__item">
-                                        <a href="?order=title&sort=DESC"
-                                            class="filter-task__link <?=($order_by == 'name' && $sort == 'DESC') ? 'filter-task__link--active' : ''?>">
+                                        <a href="?order=title&sort=DESC&search=<?=urlencode($search)?>"
+                                            class="filter-task__link <?=($order_by == 'title' && $sort == 'DESC') ? 'filter-task__link--active' : ''?>">
                                             Tên từ Z - A
                                             <i class="fas fa-sort-alpha-up"></i>
                                         </a>
@@ -221,11 +245,11 @@ if (!empty($products)) {
 for ($i = 1; $i <= $number_page; $i++) {
     if ($i == $page) {
         echo '<li class="page-item active">
-                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '">' . $i . '</a>
+                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '&search=' . $search . '">' . $i . '</a>
             </li>';
     } else {
         echo '<li class="page-item">
-                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '">' . $i . '</a>
+                <a class="page-link" href="?order=' . $order_by . '&sort=' . $sort . '&page=' . $i . '&search=' . $search . '">' . $i . '</a>
             </li>';
     }
 }

@@ -56,5 +56,9 @@
 		&:hover {
 			color: $secondary-color;
 		}
+
+		&.active a {
+			color: $primary-color;
+		}
 	}
 }
