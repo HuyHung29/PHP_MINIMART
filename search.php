@@ -200,6 +200,7 @@ for ($i = 1; $i <= $number_page; $i++) {
         })
     })
     </script>
-    <?php
+</div>
+<?php
 include "./footer.php";
 ?>
